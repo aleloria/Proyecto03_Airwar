@@ -52,12 +52,8 @@ public class Graph {
 	 
 	 public void randomPathGenerator() {
 		 int swaps=0;
-		 int[] picker = new int[this.vertexAmount];
-		 for(int index=0;index<this.vertexAmount;index++) {
-			 picker[index]=index;
-		 }
 		 for(int vertex = 0; vertex<this.vertexAmount;vertex++) {
-			 if(swaps==picker.length) {
+			 if(swaps==this.vertexAmount+10) {
 				 break;
 			 }else{
 				 boolean success=false;
@@ -67,21 +63,20 @@ public class Graph {
 						 break;
 					 }
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
-					 System.out.println("Trying to add index " + randomIndex+ " which contains the value: "+picker[randomIndex] +" to vertex number "+ vertex);
-					 if(picker[randomIndex]==-1 || picker[randomIndex]==vertex) {
+					 System.out.println("Trying to connect  " + randomIndex+ " to vertex number "+ vertex);
+					 if(randomIndex==vertex) {
 						 success=false;
 						 counter++;
 						 
 						 
-						 }else if(this.vertexList[vertex].search(picker[randomIndex])) {
+						 }else if(this.vertexList[vertex].search(randomIndex)) {
 							 success=false;
 							 counter++;
 							 
 						 }else{
 							 System.out.println("success");
-							 int destination=picker[randomIndex];
+							 int destination=randomIndex;
 							 this.addEdge(10, vertex, destination);
-							 picker[randomIndex]=-1;
 							 swaps++;
 							 success=true;
 						 }
@@ -91,26 +86,4 @@ public class Graph {
 			 }
 		 }
 		 
-		public void generateValidGraph() {
-			randomPathGenerator();
-			boolean valid=true;
-			for(int index=0; index<this.vertexAmount;index++) {
-				VertexList linkedList = this.vertexList[index];
-				if(linkedList.getLenght()<2) {
-					valid=false;
-				}
-		}
-			if(valid==false) {
-				this.vertexList = new VertexList[this.vertexAmount];
-				
-				for(int index=0; index< this.vertexAmount; index++) {
-					this.vertexList[index] = new VertexList();
-				}
-				generateValidGraph();
-			}else{
-				System.out.println("VALID GRAPH GENERATED");
-				return;
-			}
-		 
-	 }
 }

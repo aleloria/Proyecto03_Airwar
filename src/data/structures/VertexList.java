@@ -87,7 +87,7 @@ public class VertexList {
 			data=data+" ==> "+current.getData()[0];
 
 		}
-		System.out.println("Current state of list:\n"+data+" ==> ");
+		System.out.println("\n"+data+" ==> "+ "\n");
 
 	}
 
