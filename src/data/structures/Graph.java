@@ -61,14 +61,20 @@ public class Graph {
 				 break;
 			 }else{
 				 boolean success=false;
+				 int counter=0;
 				 while(success==false) {
+					 if(counter==1000) {
+						 break;
+					 }
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
-					 System.out.println(picker[randomIndex]);
-					 if(picker[randomIndex]==-1 || randomIndex==vertex) {
+					 System.out.println("Trying to add index " + randomIndex+ " which contains the value: "+picker[randomIndex] +" to vertex number "+ vertex);
+					 if(picker[randomIndex]==-1 || picker[randomIndex]==vertex) {
 						 success=false;
+						 counter++;
 						 
 						 }else if(this.vertexList[vertex].search(picker[randomIndex])) {
 							 success=false;
+							 counter++;
 							 
 						 }else{
 							 System.out.println("success");
