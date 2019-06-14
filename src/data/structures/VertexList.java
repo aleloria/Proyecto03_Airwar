@@ -47,6 +47,25 @@ public class VertexList {
 
 	}
 	
+	public boolean search(int criteria) { 
+		boolean result=false;
+		Node current = this.head;
+		while (current != null) { 
+			if (current.getData()[0].compareTo(criteria)==0) {
+				System.out.println("FOUND");
+				result=true;
+				break;
+			}
+			current=current.getNext();
+		}
+
+		if(result==false) {
+			System.out.println("NOT FOUND");
+		}
+
+		return result;     
+	}
+	
 	public void traverseList() {
 		String data="";
 		for(Node current=this.head;current!=null;current=current.getNext()) {

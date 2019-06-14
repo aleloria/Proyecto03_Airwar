@@ -63,14 +63,22 @@ public class Graph {
 				 boolean success=false;
 				 while(success==false) {
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
+					 System.out.println(picker[randomIndex]);
 					 if(picker[randomIndex]==-1 || randomIndex==vertex) {
 						 success=false;
-					 }else{
-						 int destination=picker[randomIndex];
-						 this.addEdge(10, vertex, destination);
-						 picker[randomIndex]=-1;
-						 swaps++;
-						 success=true;
+						 
+						 }else if(this.vertexList[vertex].search(picker[randomIndex])) {
+							 success=false;
+							 
+						 }else{
+							 System.out.println("success");
+							 int destination=picker[randomIndex];
+							 this.addEdge(10, vertex, destination);
+							 picker[randomIndex]=-1;
+							 swaps++;
+							 success=true;
+						 }
+						
 					 }
 				 }
 			 }
@@ -79,6 +87,3 @@ public class Graph {
 		 
 		 
 	 }
-	
-
-}
