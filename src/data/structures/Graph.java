@@ -63,7 +63,7 @@ public class Graph {
 				 boolean success=false;
 				 int counter=0;
 				 while(success==false) {
-					 if(counter==1000) {
+					 if(counter==10000) {
 						 break;
 					 }
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
@@ -71,6 +71,7 @@ public class Graph {
 					 if(picker[randomIndex]==-1 || picker[randomIndex]==vertex) {
 						 success=false;
 						 counter++;
+						 
 						 
 						 }else if(this.vertexList[vertex].search(picker[randomIndex])) {
 							 success=false;
@@ -90,6 +91,26 @@ public class Graph {
 			 }
 		 }
 		 
-		 
+		public void generateValidGraph() {
+			randomPathGenerator();
+			boolean valid=true;
+			for(int index=0; index<this.vertexAmount;index++) {
+				VertexList linkedList = this.vertexList[index];
+				if(linkedList.getLenght()<2) {
+					valid=false;
+				}
+		}
+			if(valid==false) {
+				this.vertexList = new VertexList[this.vertexAmount];
+				
+				for(int index=0; index< this.vertexAmount; index++) {
+					this.vertexList[index] = new VertexList();
+				}
+				generateValidGraph();
+			}else{
+				System.out.println("VALID GRAPH GENERATED");
+				return;
+			}
 		 
 	 }
+}

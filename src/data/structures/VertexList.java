@@ -5,6 +5,19 @@ public class VertexList {
 	
 	private Node head;
 	private Node last;
+	private Integer lenght=0;
+	
+	
+	
+
+	public Integer getLenght() {
+		return lenght;
+	}
+
+
+	public void setLenght(Integer lenght) {
+		this.lenght = lenght;
+	}
 
 
 	public Node getHead() {
@@ -36,11 +49,13 @@ public class VertexList {
 			Node newNode= new Node(vertex, weight);
 			this.setHead(newNode);
 			this.setLast(newNode);
+			this.lenght++;
 			return;
 		}else{
 			Node newNode= new Node(vertex,weight);
 			this.last.setNext(newNode);
 			this.last=this.last.getNext();
+			this.lenght++;
 			return;
 		}
 		

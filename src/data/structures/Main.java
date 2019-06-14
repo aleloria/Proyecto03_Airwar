@@ -8,7 +8,7 @@ public class Main {
 		Graph graph = new Graph(16);
 		
 
-		graph.randomPathGenerator();
+		graph.generateValidGraph();
 
 		for(int index=0;index<graph.getVertexAmount();index++) {
 			graph.getVertexList()[index].traverseList();
