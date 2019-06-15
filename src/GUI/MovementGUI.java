@@ -9,14 +9,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 
 public class MovementGUI extends JFrame implements KeyListener, ActionListener, Runnable{
 
 
-
+	public Image backgroundImg = new ImageIcon("Images\\Map01.jpeg").getImage();
 	int x= 10, y=400 , velX=0 , velYFire=0;
 	protected static Graphics2D dbg;
 	protected static Image dbImage, load;
@@ -153,7 +155,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,1360,762);
 		setResizable(false);
-		setVisible(true);
+		setVisible(true);		
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -177,9 +179,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 
-
+		g.drawImage(backgroundImg,2, 2, null);
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
-
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 		if(attacking) {
 			g.drawImage(bullet.getBulletImg(),bullet.getPosX(), AA.getPosY()+velYFire, null);
