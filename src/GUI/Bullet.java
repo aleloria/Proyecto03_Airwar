@@ -4,14 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Bullet {
-    public Image Image = new ImageIcon("imagenes\\fireballD.gif").getImage().getScaledInstance(60,60,1);
-    public int posX,posY;
+	 private Image bullet = new ImageIcon("Images/Bullet.gif").getImage().getScaledInstance(60,60,1);
+    public int posX,posY = 550;;
 
-    public Bullet(int x,int y){
+    public Bullet(int x){
         //this.posX=x;
         //this.posY=y;
         setPosX(x);
-        setPosY(y);
+
     }
 
     public void setPosX(int posX) {
@@ -30,7 +30,7 @@ public class Bullet {
         return posY;
     }
 
-    public java.awt.Image getImage() {
-        return Image;
+    public java.awt.Image getBulletImg() {
+        return bullet;
     }
 }

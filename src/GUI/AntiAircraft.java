@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class AntiAircraft {
 
-    private int posX;
+    int posX ;
     private int posY;
     private int Lives = 3;
     private Image Image = new ImageIcon("Images/AntiAircraftRotated.gif").getImage().getScaledInstance(166,193,1);
@@ -13,8 +13,8 @@ public class AntiAircraft {
     private Image bullet = new ImageIcon("Images/fireball.gif").getImage().getScaledInstance(60,60,1);
 
     public AntiAircraft(){
-        posX=0;
-        posY=400;
+        posX=100;
+        posY=550;
     }
 
     public int getPosX(){
@@ -45,7 +45,5 @@ public class AntiAircraft {
         return Image;
     }
 
-    public Image getBullet(){
-        return bullet;
-    }
+
 }
