@@ -1,3 +1,4 @@
+
 package data.structures;
 
 import java.util.Arrays;
@@ -10,16 +11,17 @@ public class Main {
 
 		Graph graph = new Graph(5);
 		graph.randomPathGenerator();
+
 		for(int index=0;index<graph.getVertexAmount();index++) {
 			System.out.println("FOR VERTEX "+ index);
 			graph.getVertexList()[index].traverseList();
 		}
 		Dijkstra path = new Dijkstra(graph, 2);
-		
-		
+
 
 		
 			
 		
 	}
 }
+
