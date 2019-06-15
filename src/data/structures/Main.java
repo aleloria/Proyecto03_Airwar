@@ -1,3 +1,4 @@
+
 package data.structures;
 
 
@@ -19,3 +20,4 @@ public class Main {
 
 	}
 }
+
