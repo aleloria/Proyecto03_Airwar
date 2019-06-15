@@ -10,7 +10,7 @@ public class AntiAircraft {
     private int Lives = 3;
     private Image Image = new ImageIcon("Images/AntiAircraftRotated.gif").getImage().getScaledInstance(166,193,1);
 
-    private Image bullet = new ImageIcon("imagenes\\fireball.gif").getImage().getScaledInstance(60,60,1);
+    private Image bullet = new ImageIcon("Images/fireball.gif").getImage().getScaledInstance(60,60,1);
 
     public AntiAircraft(){
         posX=0;
