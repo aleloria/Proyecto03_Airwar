@@ -14,6 +14,7 @@ public class Main {
 			System.out.println("FOR VERTEX "+ index);
 			graph.getVertexList()[index].traverseList();
 		}
+		graph.getVertexList()[0].traverseList();;
 
 
 	}
