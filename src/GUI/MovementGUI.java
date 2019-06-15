@@ -58,6 +58,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		if (keyCode == e.VK_SPACE ) {
 			
 			attacking = true;
+			bullet.setPosX(AA.getPosX());
 		}
 
 	}
@@ -181,8 +182,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 		if(attacking) {
-			g.drawImage(bullet.getBulletImg(),AA.getPosX(), AA.getPosY()+velYFire, null);
-			g.drawRect(AA.getPosX(), bullet.getPosY(), 20, 20);
+			g.drawImage(bullet.getBulletImg(),bullet.getPosX(), AA.getPosY()+velYFire, null);
+			g.drawRect(bullet.getPosX()+18 , bullet.getPosY()+10, 21, 20);
 
 		}
 		repaint();
