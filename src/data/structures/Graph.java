@@ -1,5 +1,6 @@
 package data.structures;
 
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Graph {
@@ -38,8 +39,9 @@ public class Graph {
 		this.vertexAmount = amount;
 		this.vertexList = new VertexList[this.vertexAmount];
 		
-		for(int index=0; index< this.vertexAmount; index++) {
+		for(Integer index=0; index< this.vertexAmount; index++) {
 			this.vertexList[index] = new VertexList();
+			this.vertexList[index].setVertex(index);
 		}
 	}
 	
@@ -53,7 +55,7 @@ public class Graph {
 	 public void randomPathGenerator() {
 		 int swaps=0;
 		 for(int vertex = 0; vertex<this.vertexAmount;vertex++) {
-			 if(swaps==this.vertexAmount+10) {
+			 if(swaps==this.vertexAmount*2) {
 				 break;
 			 }else{
 				 boolean success=false;
@@ -63,6 +65,7 @@ public class Graph {
 						 break;
 					 }
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
+					 int randomWeigth = ThreadLocalRandom.current().nextInt(0, 21);
 					 System.out.println("Trying to connect  " + randomIndex+ " to vertex number "+ vertex);
 					 if(randomIndex==vertex) {
 						 success=false;
@@ -76,7 +79,7 @@ public class Graph {
 						 }else{
 							 System.out.println("success");
 							 int destination=randomIndex;
-							 this.addEdge(10, vertex, destination);
+							 this.addEdge(randomWeigth, vertex, destination);
 							 swaps++;
 							 success=true;
 						 }
@@ -85,5 +88,6 @@ public class Graph {
 				 }
 			 }
 		 }
-		 
+	 
+	 	 
 }
