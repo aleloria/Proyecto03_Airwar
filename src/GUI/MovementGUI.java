@@ -30,7 +30,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	Boolean attacking = false;
 	//generator 
-	public SpotPos S_Pos[] = new SpotPos[20];
+	public SpotPos S_Pos[] = new SpotPos[19];
     public int SpotType;
 
 

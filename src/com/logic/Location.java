@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class Location extends JPanel {
 	public Image Image01 = new ImageIcon("Images\\airport.png").getImage();
-	public Image Image02 = new ImageIcon("Images\\plane.png").getImage();
+	public Image Image02 = new ImageIcon("Images\\carrier.png").getImage();
 	public Image img;
 
 	public Image getImg() {
