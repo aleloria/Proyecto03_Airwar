@@ -3,6 +3,7 @@ package com.logic;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -49,11 +50,11 @@ public class GameWindow {
 			if(x<460 || x>900) {
 				SpotType=0;
 			}else {
-				if(x>520 && x<880) {
+				if(x>511 && x<880) {
 					SpotType=1;
 				}
 			}
-			S_Pos[i-1] = new SpotPos(x,y,SpotType);
+			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
 			S_Pos[i-1].showPos();
 			Location location = new Location(x,y, SpotType);
 			contentpaint.add(location);

@@ -11,7 +11,9 @@ import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+
+import com.logic.Location;
+import com.logic.SpotPos;
 
 
 
@@ -27,6 +29,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	Bullet bullet = new Bullet(0);
 
 	Boolean attacking = false;
+	//generator 
+	public SpotPos S_Pos[] = new SpotPos[20];
+    public int SpotType;
 
 
 
@@ -155,7 +160,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,1360,762);
 		setResizable(false);
-		setVisible(true);		
+		setVisible(true);
+		locationGenerator(20);
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -177,9 +183,17 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		g.drawImage(dbImage, 0, 0,null);
 	}
 	public void paintComponent(Graphics g) {
-		// TODO Auto-generated method stub
-
+		//Background
 		g.drawImage(backgroundImg,2, 2, null);
+		//Locations
+		for(SpotPos i:S_Pos) {
+			while(i!=null) {
+			Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
+			g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
+			break;
+			}
+		}
+		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 		if(attacking) {
@@ -188,6 +202,26 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 		}
 		repaint();
+	}
+	
+	public void locationGenerator(int max) {
+		for(int i=1;i<max;i++) {
+			int x = this.x/2;
+			int y = (int)(Math.random() * 500 + 32);
+			if(x<460 || x>900) {
+				SpotType=0;
+			}else {
+				if(x>511 && x<880) {
+					SpotType=1;
+				}
+			}
+			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
+			S_Pos[i-1].showPos();
+//			Location location = new Location(x,y, SpotType);
+//			contentpaint.add(location);
+			this.x +=128;
+		}
+		
 	}
 
 
