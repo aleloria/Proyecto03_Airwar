@@ -66,9 +66,12 @@ public class GameWindow extends JFrame {
 		setContentPane(contentPane);
 	}	
 	public static void locationGenerator(int max) {
-		JPanel p = new JPanel();
-		p.setBounds(50, 50, 200, 200);
-		contentPane.add(p);
+		Image Image = new ImageIcon("imagenes\\airport.png").getImage();
+		JLabel l = new JLabel();
+		l.setBounds(50, 50, 32, 32);
+		l.setIcon(new ImageIcon(Image));
+		contentPane.add(l);
+
 	}
 
 }
