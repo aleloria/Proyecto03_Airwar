@@ -11,10 +11,10 @@ public class Main {
 
 		graph.randomPathGenerator();
 
-		for(int index=0;index<graph.getVertexAmount();index++) {
-			System.out.println("FOR VERTEX "+ index);
-			graph.getVertexList()[index].traverseList();
-		}
+//		for(int index=0;index<graph.getVertexAmount();index++) {
+//			System.out.println("FOR VERTEX "+ index);
+//			graph.getVertexList()[index].traverseList();
+//		}
 		graph.getVertexList()[0].traverseList();;
 
 
