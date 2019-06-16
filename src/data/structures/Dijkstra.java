@@ -1,4 +1,4 @@
-package navigation;
+package data.structures;
 import java.util.Arrays;
 
 import data.structures.Graph;

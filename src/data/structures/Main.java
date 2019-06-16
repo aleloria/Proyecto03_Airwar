@@ -1,10 +1,6 @@
 
 package data.structures;
 
-import java.util.Arrays;
-
-import navigation.Dijkstra;
-
 public class Main {
 	
 	static Graph graph = new Graph(19);
