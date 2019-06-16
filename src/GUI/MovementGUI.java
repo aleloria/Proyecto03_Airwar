@@ -157,19 +157,22 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for(Plane x: planes){
-			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-			int posX = x.getPosX();
-			int posY = x.getPosY();
-			if(posX>posFinal[0]) {
-				x.setPosX(posX - x.getVelX());
-			}if(posX<posFinal[0]) {
-				x.setPosX(posX + x.getVelX());
-			}if(posY>posFinal[1]) {
-				x.setPosY(posY - x.getVelY());
-			}if(posY<posFinal[1]) {
-				x.setPosY(posY + x.getVelY());
-			}
+			x.setPosX(x.getPosX() + x.getVelX());
 		}
+//		for(Plane x: planes){
+//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+//			int posX = x.getPosX();
+//			int posY = x.getPosY();
+//			if(posX>posFinal[0]) {
+//				x.setPosX(posX - x.getVelX());
+//			}if(posX<posFinal[0]) {
+//				x.setPosX(posX + x.getVelX());
+//			}if(posY>posFinal[1]) {
+//				x.setPosY(posY - x.getVelY());
+//			}if(posY<posFinal[1]) {
+//				x.setPosY(posY + x.getVelY());
+//			}
+//		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -216,7 +219,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 		//Planes
 		for(Plane x: planes){
-			g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+				g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
 		}
 		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
@@ -255,7 +258,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	}
 	public void planesGenerator(int max) {
 		this.planes = new Plane[max];
-		for(int i =0;i<max;i++) {
+		for(int i=0;i<max;i++) {
 			Plane p = new Plane();
 			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
 			p.setPosY(S_Pos[p.getStratVertex()].getposy());

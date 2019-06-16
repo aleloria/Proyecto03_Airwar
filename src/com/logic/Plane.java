@@ -60,11 +60,11 @@ public class Plane {
 	}
 	//set road 
 	public void road() {
-		int start = (int)(Math.random() * 20+ 1);
+		int start = (int)(Math.random() * 19+ 0);
 		setStratVertex(start);
-		int finalV = (int)(Math.random() * 20+ 1);
+		int finalV = (int)(Math.random() * 19+ 0);
 		while(finalV == start) {
-			finalV = (int)(Math.random() * 20+ 1);
+			finalV = (int)(Math.random() * 19+ 0);
 		}setFinalVertex(finalV);
 	}
 
