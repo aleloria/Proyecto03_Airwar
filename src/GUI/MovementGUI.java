@@ -72,12 +72,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 
 		if (keyCode == e.VK_SPACE ) {
-			if(reachDestination) {
-				attacking = true;
-				bullet.setPosX(AA.getPosX());
-				Bullet bullets = new Bullet();
-				bulletList.add(bullets);
-			}
+
+			attacking = true;
+			Bullet bullets = new Bullet();
+			bullets.setPosX(AA.getPosX());
+			bulletList.add(bullets);
 		}
 
 	}
@@ -103,7 +102,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	}
 	private void moving() throws InterruptedException {
-		System.out.println(AA.getPosX());
+
 		if(AA.getPosX()==4) {
 			setVelX(4);
 
@@ -120,25 +119,24 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	}
 	private void movingBullet() throws InterruptedException {
-		if(attacking) {
-			System.out.println(bullet.getPosY());
-			if (bullet.getPosY() > 5){
-				reachDestination = false;
-				velYFire -= 4;
-				bullet.setPosY(AA.getPosY()+velYFire);
+
+		for(int i=0; i<bulletList.size();i++) {
+
+			if (bulletList.get(i).getPosY() > 5){
+
+				velYFire -= 1;
+				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+velYFire);
 
 			}
 			else {
 
-				bullet.setPosY(AA.getPosY());
+				bulletList.remove(i);
 				velYFire =0;
-				attacking = false;
-				reachDestination = true;
-
 
 			}
-
 		}
+
+
 
 	}
 	protected int getVelX() {
@@ -223,13 +221,14 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
-		if(attacking) {
-			for(int i =0;i<2;i++) {
-				g.drawImage(bullet.getBulletImg(),bullet.getPosX()+(i*100), AA.getPosY()+velYFire, null);
-				g.setColor(Color.WHITE);
-				g.drawRect(bullet.getPosX()+(i*100)+18 , bullet.getPosY()+10, 21, 20);
-			}
+
+		for(int i=0; i<bulletList.size();i++) {
+			g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
+			g.setColor(Color.WHITE);
+			g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
 		}
+
+
 		tm.start();
 		repaint();
 	}
