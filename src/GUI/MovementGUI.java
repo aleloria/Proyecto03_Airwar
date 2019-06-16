@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +19,7 @@ import javax.swing.Timer;
 import com.logic.Location;
 import com.logic.Plane;
 import com.logic.SpotPos;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class MovementGUI extends JFrame implements KeyListener, ActionListener, Runnable{
@@ -35,11 +36,15 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	Boolean attacking = false;
 	Boolean reachDestination = true;
+	long keyPressLength;
 	//generator 
 	public SpotPos S_Pos[] = new SpotPos[19];
 	public int SpotType;
 	public Plane planes[];
-
+	public Rectangle fireRect = new Rectangle(0,0,60,60);
+	private long keyPressedMillis;
+	private boolean alreadyPassed=false;
+	
 	//plane animation
 	Timer tm = new Timer(10,this);
 
@@ -49,230 +54,231 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		if (keyCode == e.VK_LEFT) {
-
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-
-		}
-	}
-
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		int keyCode = e.getKeyCode();
-		if (keyCode == e.VK_LEFT) {
-
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-		}
 
 		if (keyCode == e.VK_SPACE ) {
-
-			attacking = true;
-			Bullet bullets = new Bullet();
-			bullets.setPosX(AA.getPosX());
-			bulletList.add(bullets);
-		}
-
-	}
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		try{
-			while(true){
-
-				moving();
-				movingBullet();
-				Thread.sleep(10);
-			}
-		}catch(Exception e){
-			System.out.println("!Uh-oh, something went wrong!.");
-			System.out.println(e);
-		}
-
-	}
-	private void moving() throws InterruptedException {
-
-		if(AA.getPosX()==4) {
-			setVelX(4);
-
-
-		}
-
-		if (AA.getPosX()==1104) {
-
-			setVelX(-4);
-
-		}
-
-		AA.setPosX(AA.getPosX()+velX);
-
-	}
-	private void movingBullet(){
-
-		for(int i=0; i<bulletList.size();i++) {
-
-			if (bulletList.get(i).getPosY() > 5){
-
-				actualVel = bulletList.get(i).getVelyFire();
-				bulletList.get(i).setVelyFire(-4);
-				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
-				
-
-			}
-			else {
-				if(!bulletList.isEmpty()) {
-					bulletList.remove(i);
-					
-				}
-
+			if(alreadyPassed==false) {
+				keyPressedMillis = System.currentTimeMillis();
+				alreadyPassed=true;
 			}
 		}
-
-
-
-	}
-	protected int getVelX() {
-		return velX;
-	}
-	public void setVelX(int velX) {
-		this.velX = velX;
 	}
 
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-//		for(Plane x: planes){
-//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-//			int posX = x.getPosX();
-//			int posY = x.getPosY();
-//			if(posX>posFinal[0]) {
-//				x.setPosX(posX - x.getVelX());
-//			}if(posX<posFinal[0]) {
-//				x.setPosX(posX + x.getVelX());
-//			}if(posY>posFinal[1]) {
-//				x.setPosY(posY - x.getVelY());
-//			}if(posY<posFinal[1]) {
-//				x.setPosY(posY + x.getVelY());
-//			}
-		for(Plane x: planes){			
-			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-			int posX = x.getPosX();
-			int posY = x.getPosY();
-			
-			double deltaX = posFinal[0] - posX;
-			double deltaY = posFinal[1] - posY;
-			double angle = Math.atan2( deltaY, deltaX );	
-			
-			posX +=  Math.round(Math.cos( angle ));
-			posY +=  Math.round(Math.sin( angle ));			
-			x.setPosX(posX);
-			x.setPosY(posY);
-			repaint();
+
+
+@Override
+public void keyReleased(KeyEvent e) {
+	int keyCode = e.getKeyCode();
+
+	if (keyCode == e.VK_SPACE ) {
+	
+		attacking = true;
+		Bullet bullets = new Bullet();
+		bullets.setPosX(AA.getPosX());
+		bulletList.add(bullets);
+		keyPressLength = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - keyPressedMillis)+1;
+	    alreadyPassed=false;
+	    System.out.println("Key Pressed "+keyPressLength+" s");
+	}
+
+}
+public void keyTyped(KeyEvent arg0) {
+	// TODO Auto-generated method stub
+
+}
+
+@Override
+public void run() {
+	// TODO Auto-generated method stub
+	try{
+		while(true){
+
+			moving();
+			movingBullet();
+			Thread.sleep(10);
+		}
+	}catch(Exception e){
+		System.out.println("!Uh-oh, something went wrong!.");
+		System.out.println(e);
+	}
+
+}
+private void moving() throws InterruptedException {
+
+	if(AA.getPosX()==4) {
+		setVelX(4);
+
+
+	}
+
+	if (AA.getPosX()==1104) {
+
+		setVelX(-4);
+
+	}
+
+	AA.setPosX(AA.getPosX()+velX);
+
+}
+private void movingBullet(){
+
+	for(int i=0; i<bulletList.size();i++) {
+
+		if (bulletList.get(i).getPosY() > 5){
+
+			actualVel = bulletList.get(i).getVelyFire();
+			bulletList.get(i).setVelyFire((int) (2* -keyPressLength));
+			bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
+
 
 		}
-	}
-	public MovementGUI() {
-		// TODO Auto-generated constructor stub
+		else {
+			if(!bulletList.isEmpty()) {
+				bulletList.remove(i);
 
-		addKeyListener(this);
-		setLayout(null);
-		setTitle("Airwar");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,1360,762);
-		setResizable(false);
-		setVisible(true);
-		locationGenerator(20);
-		planesGenerator(20);
-		Thread t=new Thread() {
-			public void run() {
-				//the following line will keep this app alive for 1000 seconds,
-				//waiting for events to occur and responding to them (printing incoming messages to console).
-				try {Thread.sleep(15);} catch (InterruptedException ie) {}
 			}
-		};
-		t.start();
-		System.out.println("Started");
 
-
-
+		}
 	}
-	public void paint(Graphics g){
-		dbImage = createImage(1324,775);
-		dbg = (Graphics2D) dbImage.getGraphics();
-		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		paintComponent(dbg);
-		g.drawImage(dbImage, 0, 0,null);
-	}
-	public void paintComponent(Graphics g) {
-		//Background
-		g.drawImage(backgroundImg,2, 2, null);
-		//Locations
-		for(SpotPos i:S_Pos) {
-			while(i!=null) {
-				Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
-				g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
-				break;
-			}
-		}
-		//Planes
-		for(Plane x: planes){
-			g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
-		}
-		//Canon
-		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
-		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
-
-		for(int i=0; i<bulletList.size();i++) {
-			g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
-			g.setColor(Color.WHITE);
-			g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
-		}
 
 
-		tm.start();
+
+}
+protected int getVelX() {
+	return velX;
+}
+public void setVelX(int velX) {
+	this.velX = velX;
+}
+
+
+@Override
+public void actionPerformed(ActionEvent e) {
+	//		for(Plane x: planes){
+	//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+	//			int posX = x.getPosX();
+	//			int posY = x.getPosY();
+	//			if(posX>posFinal[0]) {
+	//				x.setPosX(posX - x.getVelX());
+	//			}if(posX<posFinal[0]) {
+	//				x.setPosX(posX + x.getVelX());
+	//			}if(posY>posFinal[1]) {
+	//				x.setPosY(posY - x.getVelY());
+	//			}if(posY<posFinal[1]) {
+	//				x.setPosY(posY + x.getVelY());
+	//			}
+	for(Plane x: planes){			
+		int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+		int posX = x.getPosX();
+		int posY = x.getPosY();
+
+		double deltaX = posFinal[0] - posX;
+		double deltaY = posFinal[1] - posY;
+		double angle = Math.atan2( deltaY, deltaX );	
+
+		posX +=  Math.round(Math.cos( angle ));
+		posY +=  Math.round(Math.sin( angle ));			
+		x.setPosX(posX);
+		x.setPosY(posY);
 		repaint();
+
+	}
+}
+public MovementGUI() {
+	// TODO Auto-generated constructor stub
+
+	addKeyListener(this);
+	setLayout(null);
+	setTitle("Airwar");
+	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	setBounds(0,0,1360,762);
+	setResizable(false);
+	setVisible(true);
+	locationGenerator(20);
+	planesGenerator(20);
+	Thread t=new Thread() {
+		public void run() {
+			//the following line will keep this app alive for 1000 seconds,
+			//waiting for events to occur and responding to them (printing incoming messages to console).
+			try {Thread.sleep(15);} catch (InterruptedException ie) {}
+		}
+	};
+	t.start();
+	System.out.println("Started");
+
+
+
+}
+public void paint(Graphics g){
+	dbImage = createImage(1324,775);
+	dbg = (Graphics2D) dbImage.getGraphics();
+	dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	paintComponent(dbg);
+	g.drawImage(dbImage, 0, 0,null);
+}
+public void paintComponent(Graphics g) {
+	//Background
+	g.drawImage(backgroundImg,2, 2, null);
+	//Locations
+	for(SpotPos i:S_Pos) {
+		while(i!=null) {
+			Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
+			g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
+			break;
+		}
+	}
+	//Planes
+	for(Plane x: planes){
+		g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+	}
+	//Canon
+	g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
+	g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
+
+	for(int i=0; i<bulletList.size();i++) {
+		g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX()-25, bulletList.get(i).getPosY(), null);
+		g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX()+25, bulletList.get(i).getPosY(), null);
+		g.setColor(Color.WHITE);
+		g.drawRect(bulletList.get(i).getPosX()-25+18 , bulletList.get(i).getPosY()+10, 21, 20);
+		g.drawRect(bulletList.get(i).getPosX()+25+18 , bulletList.get(i).getPosY()+10, 21, 20);
+		fireRect.x=bulletList.get(i).getPosX()+18;
+		fireRect.y=bulletList.get(i).getPosY()+10;
 	}
 
-	public void locationGenerator(int max) {
-		for(int i=1;i<max;i++) {
-			int x = this.x/2;
-			int y = (int)(Math.random() * 500 + 32);
-			if(x<460 || x>900) {
-				SpotType=0;
-			}else {
-				if(x>511 && x<880) {
-					SpotType=1;
-				}
+
+	tm.start();
+	repaint();
+}
+
+public void locationGenerator(int max) {
+	for(int i=1;i<max;i++) {
+		int x = this.x/2;
+		int y = (int)(Math.random() * 500 + 32);
+		if(x<460 || x>900) {
+			SpotType=0;
+		}else {
+			if(x>511 && x<880) {
+				SpotType=1;
 			}
-			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
-			S_Pos[i-1].showPos();
-			//			Location location = new Location(x,y, SpotType);
-			//			contentpaint.add(location);
-			this.x +=128;
 		}
+		S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
+		S_Pos[i-1].showPos();
+		//			Location location = new Location(x,y, SpotType);
+		//			contentpaint.add(location);
+		this.x +=128;
+	}
 
 
+}
+public void planesGenerator(int max) {
+	this.planes = new Plane[max];
+	for(int i=0;i<max;i++) {
+		Plane p = new Plane();
+		p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
+		p.setPosY(S_Pos[p.getStratVertex()].getposy());
+		this.planes[i] = p;
 	}
-	public void planesGenerator(int max) {
-		this.planes = new Plane[max];
-		for(int i=0;i<max;i++) {
-			Plane p = new Plane();
-			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
-			p.setPosY(S_Pos[p.getStratVertex()].getposy());
-			this.planes[i] = p;
-		}
-	}
+}
 
 
 
