@@ -73,7 +73,7 @@ public class Graph {
 	 *
 	 * @param amount the amount
 	 */
-	Graph(Integer amount){
+	public Graph(Integer amount){
 		
 		this.vertexAmount = amount;
 		this.vertexList = new VertexList[this.vertexAmount];
