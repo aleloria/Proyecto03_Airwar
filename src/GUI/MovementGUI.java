@@ -152,23 +152,35 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		for(Plane x: planes){
-			x.setPosX(x.getPosX() + x.getVelX());
+//		for(Plane x: planes){
+//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+//			int posX = x.getPosX();
+//			int posY = x.getPosY();
+//			if(posX>posFinal[0]) {
+//				x.setPosX(posX - x.getVelX());
+//			}if(posX<posFinal[0]) {
+//				x.setPosX(posX + x.getVelX());
+//			}if(posY>posFinal[1]) {
+//				x.setPosY(posY - x.getVelY());
+//			}if(posY<posFinal[1]) {
+//				x.setPosY(posY + x.getVelY());
+//			}
+		for(Plane x: planes){			
+			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+			int posX = x.getPosX();
+			int posY = x.getPosY();
+			
+			double deltaX = posFinal[0] - posX;
+			double deltaY = posFinal[1] - posY;
+			double angle = Math.atan2( deltaY, deltaX );	
+			
+			posX +=  Math.round(Math.cos( angle ));
+			posY +=  Math.round(Math.sin( angle ));			
+			x.setPosX(posX);
+			x.setPosY(posY);
+			repaint();
+
 		}
-		//		for(Plane x: planes){
-		//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-		//			int posX = x.getPosX();
-		//			int posY = x.getPosY();
-		//			if(posX>posFinal[0]) {
-		//				x.setPosX(posX - x.getVelX());
-		//			}if(posX<posFinal[0]) {
-		//				x.setPosX(posX + x.getVelX());
-		//			}if(posY>posFinal[1]) {
-		//				x.setPosY(posY - x.getVelY());
-		//			}if(posY<posFinal[1]) {
-		//				x.setPosY(posY + x.getVelY());
-		//			}
-		//		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -181,7 +193,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setResizable(false);
 		setVisible(true);
 		locationGenerator(20);
-		planesGenerator(5);
+		planesGenerator(20);
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,

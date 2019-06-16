@@ -11,6 +11,9 @@ public class Plane {
     private int velY =1;
     private int stratVertex;
     private int finalVertex;
+    //vertex
+    private int[] actualVertex;
+    int index = 0;
     
     private Image Image = new ImageIcon("Images/plane.png").getImage();
     
@@ -66,6 +69,12 @@ public class Plane {
 		while(finalV == start) {
 			finalV = (int)(Math.random() * 19+ 0);
 		}setFinalVertex(finalV);
+	}
+	public int getActualVertex() {
+		return actualVertex[this.index];
+	}
+	public void setNextActualVertex() {
+		this.index += 1;
 	}
 
 }
