@@ -1,21 +1,21 @@
-
 package com.logic;
 
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.util.Arrays;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import java.awt.FlowLayout;
+import javax.swing.SpringLayout;
 
 public class GameWindow {
 
 	private JFrame frame;
 	public JPanel contentpaint;
-	public SpotPos S_Pos[] = new SpotPos[20];
-    public int SpotType;
 	
 	private int x=128; int y=720;
 
@@ -27,7 +27,7 @@ public class GameWindow {
 			public void run() {
 				try {
 					GameWindow window = new GameWindow();
-					window.locationGenerator(20);
+					window.locationGenerator(18);
 //					window.locationGenerator(1);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,19 +44,10 @@ public class GameWindow {
 	}
 
 	public void locationGenerator(int max) {
-		for(int i=1;i<max;i++) {
+		for(int i=1;i<=max;i++) {
 			int x = this.x/2;
-			int y = (int)(Math.random() * 500 + 1);
-			if(x<460 || x>900) {
-				SpotType=0;
-			}else {
-				if(x>511 && x<880) {
-					SpotType=1;
-				}
-			}
-			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
-			S_Pos[i-1].showPos();
-			Location location = new Location(x,y, SpotType);
+			int y = (int)(Math.random() * 500 + 1); 
+			Location location = new Location(x,y);
 			contentpaint.add(location);
 			this.x +=128;
 		}
@@ -86,4 +77,3 @@ public class GameWindow {
 	}
 
 }
-

@@ -7,10 +7,10 @@ public class Bullet {
 	 private Image bullet = new ImageIcon("Images/Bullet.gif").getImage().getScaledInstance(60,60,1);
     public int posX,posY = 550;;
 
-    public Bullet(int x){
+    public Bullet(){
         //this.posX=x;
         //this.posY=y;
-        setPosX(x);
+    
 
     }
 
