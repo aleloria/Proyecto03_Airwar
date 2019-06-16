@@ -10,7 +10,7 @@ public class Dijkstra {
 	private VertexList[] vertexList = new VertexList[1];
 	private Integer[] unvisited = new Integer[1];
 	private Integer vertexAmount = 0;
-	private Integer[] path = new Integer[1];
+	private VertexList path = new VertexList();
 	private Integer[] distances = new Integer[1];
 	private Integer[] previousVertex = new Integer[1];
 	private boolean hasElements= true;
@@ -18,7 +18,7 @@ public class Dijkstra {
 	
 	
 	
-	public Dijkstra(Graph graph, Integer start, Integer finish) {
+	public Dijkstra(Graph graph, Integer start) {
 		
 		this.vertexAmount = graph.getVertexAmount();
 		this.vertexList = graph.getVertexList();
@@ -30,11 +30,12 @@ public class Dijkstra {
 			this.unvisited[index]=index;
 		}
 		this.distances[start]=0;
-		this.previousVertex[start]=start;
-		begin(finish,start);
+		
+		begin();
+
 	}
 
-	public void begin(Integer finish, Integer start) {
+	private void begin() {
 		while(hasElements) {
 			Integer currentVertex= getVertex();
 			
@@ -55,15 +56,11 @@ public class Dijkstra {
 			}
 			this.unvisited[currentVertex]=-1;
 			System.out.println("DISTANCIAS "+Arrays.deepToString(distances));
-			System.out.println("PREVIOUS VERTEX "+Arrays.deepToString(previousVertex));
 			System.out.println();
 			
-			
-			
-			
 		}
-		getPath(finish,start);
-			
+		
+		
 	}
 
 	private Integer getVertex() {
@@ -76,12 +73,10 @@ public class Dijkstra {
 					System.out.println("Sustituyo "+smallestDistance+" por "+this.distances[index]);
 					smallestDistance=this.distances[index];
 					vertex=index;
-					
 				}
 
 			}
 		}
-		
 		return vertex;
 	}
 		
@@ -103,55 +98,9 @@ public class Dijkstra {
 	public Integer getVertexAmount() {
 		return vertexAmount;
 	}
-	
-	public boolean checkValidity() {
-		boolean valid = true;
-		for(int index=0;index<this.previousVertex.length;index++) {
-			if(this.previousVertex[index]==null) {
-				valid = false;
-				System.out.println("correction needed");
-			}
-		}
-		return valid;
+	public VertexList getPath() {
+		return path;
 	}
-	
-	public Integer[] getPath(int finish, int start) {
-		Integer[] preliminaryPath = new Integer[this.vertexAmount];
-		Integer index=0;
-		Integer target=finish;
-		while(true) {
-			System.out.println("TARGET BEFORE "+target);
-			preliminaryPath[index]=target;
-			target=this.previousVertex[target];
-			System.out.println("TARGET AFTER "+target);
-			index++;
-			if(target.equals(start)) {
-				break;
-			}
-		}
-		
-		Integer counter = 0;
-		for(int position=0;position<preliminaryPath.length;position++) {
-			if(preliminaryPath[position]!=null) {
-				counter++;
-			}
-		}
-		this.path = new Integer[counter];
-		Integer i=0;
-		counter=counter-1;
-		while(counter>=0) {
-			if(counter<0) {
-				break;
-			}
-			this.path[i]=preliminaryPath[counter];
-			i++;
-			counter--;
-		}
-		System.out.println(Arrays.deepToString(path));
-		return this.path;
-	}
-
-	
 	
 	
 	
