@@ -20,7 +20,6 @@ import com.logic.Location;
 import com.logic.Plane;
 import com.logic.SpotPos;
 
-import data.structures.Dijkstra;
 import data.structures.Graph;
 
 
@@ -294,7 +293,6 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			for(int i=0; i<bulletList.size();i++) {
 				if(x.getReac().intersects(bulletList.get(i).getRect())) {
 					x.setKill(true);
-					System.out.println("colision");
 				}
 			}
 		}
