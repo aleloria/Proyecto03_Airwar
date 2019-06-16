@@ -7,6 +7,7 @@ public class Bullet {
 	 private Image bullet = new ImageIcon("Images/Bullet.gif").getImage().getScaledInstance(60,60,1);
     public int posX,posY = 550;
     public int velyFire =0;
+    public Rectangle rect;
 
     public int getVelyFire() {
 		return velyFire;
@@ -42,5 +43,14 @@ public class Bullet {
     public java.awt.Image getBulletImg() {
         return bullet;
     }
+
+	public Rectangle getRect() {
+		return rect;
+	}
+
+	public void setRect(Rectangle rect) {
+		this.rect = rect;
+	}
+    
 }
 

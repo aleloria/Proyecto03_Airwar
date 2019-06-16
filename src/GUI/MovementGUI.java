@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,9 @@ import javax.swing.Timer;
 import com.logic.Location;
 import com.logic.Plane;
 import com.logic.SpotPos;
+
+import data.structures.Dijkstra;
+import data.structures.Graph;
 
 
 
@@ -42,6 +46,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	//plane animation
 	Timer tm = new Timer(10,this);
+
+	//graph
+	public Graph graph;
 
 
 
@@ -127,13 +134,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				actualVel = bulletList.get(i).getVelyFire();
 				bulletList.get(i).setVelyFire(-4);
 				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
-				
+
 
 			}
 			else {
 				if(!bulletList.isEmpty()) {
 					bulletList.remove(i);
-					
+
 				}
 
 			}
@@ -152,34 +159,35 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		for(Plane x: planes){
-//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-//			int posX = x.getPosX();
-//			int posY = x.getPosY();
-//			if(posX>posFinal[0]) {
-//				x.setPosX(posX - x.getVelX());
-//			}if(posX<posFinal[0]) {
-//				x.setPosX(posX + x.getVelX());
-//			}if(posY>posFinal[1]) {
-//				x.setPosY(posY - x.getVelY());
-//			}if(posY<posFinal[1]) {
-//				x.setPosY(posY + x.getVelY());
-//			}
-		for(Plane x: planes){			
-			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-			int posX = x.getPosX();
-			int posY = x.getPosY();
-			
-			double deltaX = posFinal[0] - posX;
-			double deltaY = posFinal[1] - posY;
-			double angle = Math.atan2( deltaY, deltaX );	
-			
-			posX +=  Math.round(Math.cos( angle ));
-			posY +=  Math.round(Math.sin( angle ));			
-			x.setPosX(posX);
-			x.setPosY(posY);
-			repaint();
+		//		for(Plane x: planes){
+		//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+		//			int posX = x.getPosX();
+		//			int posY = x.getPosY();
+		//			if(posX>posFinal[0]) {
+		//				x.setPosX(posX - x.getVelX());
+		//			}if(posX<posFinal[0]) {
+		//				x.setPosX(posX + x.getVelX());
+		//			}if(posY>posFinal[1]) {
+		//				x.setPosY(posY - x.getVelY());
+		//			}if(posY<posFinal[1]) {
+		//				x.setPosY(posY + x.getVelY());
+		//			}
+		for(Plane x: planes){
+			if(!x.isKill()) {
+				int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+				int posX = x.getPosX();
+				int posY = x.getPosY();
 
+				double deltaX = posFinal[0] - posX;
+				double deltaY = posFinal[1] - posY;
+				double angle = Math.atan2( deltaY, deltaX );	
+
+				posX +=  Math.round(Math.cos( angle ));
+				posY +=  Math.round(Math.sin( angle ));			
+				x.setPosX(posX);
+				x.setPosY(posY);
+				//				repaint();
+			}
 		}
 	}
 	public MovementGUI() {
@@ -194,6 +202,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setVisible(true);
 		locationGenerator(20);
 		planesGenerator(20);
+		this.graph = new Graph(19);
+		graph.randomPathGenerator();
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -227,7 +237,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 		//Planes
 		for(Plane x: planes){
-			g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+			if(!x.isKill()) {
+				g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+				x.setReac(new Rectangle(x.getPosX(),x.getPosY(),32,32));
+			}
 		}
 		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
@@ -237,9 +250,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
 			g.setColor(Color.WHITE);
 			g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
+			bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
 		}
 
 
+		collision();
 		tm.start();
 		repaint();
 	}
@@ -274,9 +289,20 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 	}
 
-
-
-
-
-
+	public void collision() {
+		for(Plane x: planes){
+			for(int i=0; i<bulletList.size();i++) {
+				if(x.getReac().intersects(bulletList.get(i).getRect())) {
+					x.setKill(true);
+					System.out.println("colision");
+				}
+			}
+		}
+	}
 }
+
+
+
+
+
+

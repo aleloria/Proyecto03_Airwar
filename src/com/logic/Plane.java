@@ -1,6 +1,7 @@
 package com.logic;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
@@ -12,11 +13,16 @@ public class Plane {
     private int stratVertex;
     private int finalVertex;
     //vertex
-    private int[] actualVertex;
+    public Integer[] actualVertex;
     int index = 0;
+    
+    //Rect
+    public Rectangle reac;
     
     private Image Image = new ImageIcon("Images/plane.png").getImage();
     
+    
+    public boolean kill = false;
     
 
     public Plane() {
@@ -76,5 +82,19 @@ public class Plane {
 	public void setNextActualVertex() {
 		this.index += 1;
 	}
+	public Rectangle getReac() {
+		return reac;
+	}
+	public void setReac(Rectangle reac) {
+		this.reac = reac;
+	}
+	public boolean isKill() {
+		return kill;
+	}
+	public void setKill(boolean kill) {
+		this.kill = kill;
+	}
+	
+	
 
 }
