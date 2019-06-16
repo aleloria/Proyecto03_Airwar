@@ -10,7 +10,7 @@ public class Dijkstra {
 	private VertexList[] vertexList = new VertexList[1];
 	private Integer[] unvisited = new Integer[1];
 	private Integer vertexAmount = 0;
-	private VertexList path = new VertexList();
+	private Integer[] path = new Integer[1];
 	private Integer[] distances = new Integer[1];
 	private Integer[] previousVertex = new Integer[1];
 	private boolean hasElements= true;
@@ -120,17 +120,35 @@ public class Dijkstra {
 		Integer index=0;
 		Integer target=finish;
 		while(true) {
-			System.out.println("TaRGET BEFORE "+target);
+			System.out.println("TARGET BEFORE "+target);
 			preliminaryPath[index]=target;
 			target=this.previousVertex[target];
-			System.out.println("TaRGET AFTER "+target);
+			System.out.println("TARGET AFTER "+target);
 			index++;
 			if(target.equals(start)) {
 				break;
 			}
 		}
-		System.out.println(Arrays.deepToString(preliminaryPath));
-		return preliminaryPath;
+		
+		Integer counter = 0;
+		for(int position=0;position<preliminaryPath.length;position++) {
+			if(preliminaryPath[position]!=null) {
+				counter++;
+			}
+		}
+		this.path = new Integer[counter];
+		Integer i=0;
+		counter=counter-1;
+		while(counter>=0) {
+			if(counter<0) {
+				break;
+			}
+			this.path[i]=preliminaryPath[counter];
+			i++;
+			counter--;
+		}
+		System.out.println(Arrays.deepToString(path));
+		return this.path;
 	}
 
 	
