@@ -154,19 +154,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+//		x = x + velX;
+//		p.setPosX(x + velX);
 		for(Plane x: planes){
-			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-			int posX = x.getPosX();
-			int posY = x.getPosY();
-			if(posX>posFinal[0]) {
-				x.setPosX(posX - x.getVelX());
-			}if(posX<posFinal[0]) {
-				x.setPosX(posX + x.getVelX());
-			}if(posY>posFinal[1]) {
-				x.setPosY(posY - x.getVelY());
-			}if(posY<posFinal[1]) {
-				x.setPosY(posY + x.getVelY());
-			}
+			x.setPosX(x.getPosX()+x.getVelX());
 		}
 	}
 	public MovementGUI() {
