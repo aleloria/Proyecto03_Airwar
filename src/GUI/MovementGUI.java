@@ -1,6 +1,5 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -11,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -38,10 +38,15 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	Boolean attacking = false;
 	Boolean reachDestination = true;
+	long keyPressLength;
 	//generator 
 	public SpotPos S_Pos[] = new SpotPos[19];
 	public int SpotType;
 	public Plane planes[];
+	
+	//keypress
+	private long keyPressedMillis;
+	private boolean alreadyPassed=false;
 
 	//plane animation
 	Timer tm = new Timer(10,this);
@@ -55,13 +60,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		if (keyCode == e.VK_LEFT) {
 
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-
+		if (keyCode == e.VK_SPACE ) {
+			if(alreadyPassed==false) {
+				keyPressedMillis = System.currentTimeMillis();
+				alreadyPassed=true;
+			}
 		}
 	}
 
@@ -69,20 +73,16 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if (keyCode == e.VK_LEFT) {
-
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-		}
 
 		if (keyCode == e.VK_SPACE ) {
-
+		
 			attacking = true;
 			Bullet bullets = new Bullet();
 			bullets.setPosX(AA.getPosX());
 			bulletList.add(bullets);
+			keyPressLength = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - keyPressedMillis)+1;
+		    alreadyPassed=false;
+		    System.out.println("Key Pressed "+keyPressLength+" s");
 		}
 
 	}
@@ -131,7 +131,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			if (bulletList.get(i).getPosY() > 5){
 
 				actualVel = bulletList.get(i).getVelyFire();
-				bulletList.get(i).setVelyFire(-4);
+				bulletList.get(i).setVelyFire((int) (3* -keyPressLength));
 				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
 
 
@@ -148,6 +148,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 	}
+
+
+
 	protected int getVelX() {
 		return velX;
 	}
@@ -158,19 +161,6 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//		for(Plane x: planes){
-		//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-		//			int posX = x.getPosX();
-		//			int posY = x.getPosY();
-		//			if(posX>posFinal[0]) {
-		//				x.setPosX(posX - x.getVelX());
-		//			}if(posX<posFinal[0]) {
-		//				x.setPosX(posX + x.getVelX());
-		//			}if(posY>posFinal[1]) {
-		//				x.setPosY(posY - x.getVelY());
-		//			}if(posY<posFinal[1]) {
-		//				x.setPosY(posY + x.getVelY());
-		//			}
 		for(Plane x: planes){
 			if(!x.isKill()) {
 				int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
@@ -242,13 +232,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			}
 		}
 		//Canon
-		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
+		//g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 
 		for(int i=0; i<bulletList.size();i++) {
 			g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
-			g.setColor(Color.WHITE);
-			g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
+			//g.setColor(Color.WHITE);
+			//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
 			bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
 		}
 
