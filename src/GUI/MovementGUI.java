@@ -25,7 +25,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 	public Image backgroundImg = new ImageIcon("Images\\Map01.jpeg").getImage();
-	int x= 10, y=400 , velX=0 , velYFire=0;
+	int x= 10, y=400 , velX=0 , actualVel=0, newVel = 0;
 	protected static Graphics2D dbg;
 	protected static Image dbImage, load;
 	ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
@@ -118,20 +118,23 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		AA.setPosX(AA.getPosX()+velX);
 
 	}
-	private void movingBullet() throws InterruptedException {
+	private void movingBullet(){
 
 		for(int i=0; i<bulletList.size();i++) {
 
 			if (bulletList.get(i).getPosY() > 5){
 
-				velYFire -= 1;
-				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+velYFire);
+				actualVel = bulletList.get(i).getVelyFire();
+				bulletList.get(i).setVelyFire(-4);
+				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
+				
 
 			}
 			else {
-
-				bulletList.remove(i);
-				velYFire =0;
+				if(!bulletList.isEmpty()) {
+					bulletList.remove(i);
+					
+				}
 
 			}
 		}
@@ -145,13 +148,6 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void setVelX(int velX) {
 		this.velX = velX;
 	}
-	public int getVelYFire() {
-		return velYFire;
-	}
-
-	public void setVelYFire(int velYFire) {
-		this.velYFire = velYFire;
-	}
 
 
 	@Override
@@ -159,20 +155,20 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		for(Plane x: planes){
 			x.setPosX(x.getPosX() + x.getVelX());
 		}
-//		for(Plane x: planes){
-//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-//			int posX = x.getPosX();
-//			int posY = x.getPosY();
-//			if(posX>posFinal[0]) {
-//				x.setPosX(posX - x.getVelX());
-//			}if(posX<posFinal[0]) {
-//				x.setPosX(posX + x.getVelX());
-//			}if(posY>posFinal[1]) {
-//				x.setPosY(posY - x.getVelY());
-//			}if(posY<posFinal[1]) {
-//				x.setPosY(posY + x.getVelY());
-//			}
-//		}
+		//		for(Plane x: planes){
+		//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+		//			int posX = x.getPosX();
+		//			int posY = x.getPosY();
+		//			if(posX>posFinal[0]) {
+		//				x.setPosX(posX - x.getVelX());
+		//			}if(posX<posFinal[0]) {
+		//				x.setPosX(posX + x.getVelX());
+		//			}if(posY>posFinal[1]) {
+		//				x.setPosY(posY - x.getVelY());
+		//			}if(posY<posFinal[1]) {
+		//				x.setPosY(posY + x.getVelY());
+		//			}
+		//		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -219,7 +215,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 		//Planes
 		for(Plane x: planes){
-				g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+			g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
 		}
 		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
