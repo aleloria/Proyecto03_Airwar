@@ -159,22 +159,19 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		for(Plane x: planes){
-			x.setPosX(x.getPosX() + x.getVelX());
+			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+			int posX = x.getPosX();
+			int posY = x.getPosY();
+			if(posX>posFinal[0]) {
+				x.setPosX(posX - x.getVelX());
+			}if(posX<posFinal[0]) {
+				x.setPosX(posX + x.getVelX());
+			}if(posY>posFinal[1]) {
+				x.setPosY(posY - x.getVelY());
+			}if(posY<posFinal[1]) {
+				x.setPosY(posY + x.getVelY());
+			}
 		}
-//		for(Plane x: planes){
-//			int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
-//			int posX = x.getPosX();
-//			int posY = x.getPosY();
-//			if(posX>posFinal[0]) {
-//				x.setPosX(posX - x.getVelX());
-//			}if(posX<posFinal[0]) {
-//				x.setPosX(posX + x.getVelX());
-//			}if(posY>posFinal[1]) {
-//				x.setPosY(posY - x.getVelY());
-//			}if(posY<posFinal[1]) {
-//				x.setPosY(posY + x.getVelY());
-//			}
-//		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -187,7 +184,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setResizable(false);
 		setVisible(true);
 		locationGenerator(20);
-		planesGenerator(5);
+		planesGenerator(20);
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
