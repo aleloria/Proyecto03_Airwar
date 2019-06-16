@@ -7,9 +7,19 @@ import javax.swing.ImageIcon;
 public class Plane {
 	private int posX;
     private int posY;
+    private int velX =1;
+    private int velY =1;
+    private int stratVertex;
+    private int finalVertex;
+    
     private Image Image = new ImageIcon("Images/plane.png").getImage();
+    
+    
 
-    public int getPosX() {
+    public Plane() {
+		road();
+	}
+	public int getPosX() {
 		return posX;
 	}
 	public void setPosX(int posX) {
@@ -23,6 +33,39 @@ public class Plane {
 	}
 	public Image getImageData() {
 		return Image;
+	}
+	public int getVelX() {
+		return velX;
+	}
+	public void setVelX(int velX) {
+		this.velX = velX;
+	}
+	public int getVelY() {
+		return velY;
+	}
+	public void setVelY(int velY) {
+		this.velY = velY;
+	}
+	public int getStratVertex() {
+		return stratVertex;
+	}
+	public void setStratVertex(int stratVertex) {
+		this.stratVertex = stratVertex;
+	}
+	public int getFinalVertex() {
+		return finalVertex;
+	}
+	public void setFinalVertex(int finalVertex) {
+		this.finalVertex = finalVertex;
+	}
+	//set road 
+	public void road() {
+		int start = (int)(Math.random() * 20+ 1);
+		setStratVertex(start);
+		int finalV = (int)(Math.random() * 20+ 1);
+		while(finalV == start) {
+			finalV = (int)(Math.random() * 20+ 1);
+		}setFinalVertex(finalV);
 	}
 
 }

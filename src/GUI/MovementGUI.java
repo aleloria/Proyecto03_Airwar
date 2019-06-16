@@ -11,8 +11,10 @@ import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import com.logic.Location;
+import com.logic.Plane;
 import com.logic.SpotPos;
 
 
@@ -24,14 +26,18 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	int x= 10, y=400 , velX=0 , velYFire=0;
 	protected static Graphics2D dbg;
 	protected static Image dbImage, load;
-	
+
 	AntiAircraft AA = new AntiAircraft();
 	Bullet bullet = new Bullet(0);
 
 	Boolean attacking = false;
 	//generator 
 	public SpotPos S_Pos[] = new SpotPos[19];
-    public int SpotType;
+	public int SpotType;
+	public Plane planes[];
+	
+	//plane animation
+	Timer tm = new Timer(10,this);
 
 
 
@@ -63,7 +69,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 
 		if (keyCode == e.VK_SPACE ) {
-			
+
 			attacking = true;
 			bullet.setPosX(AA.getPosX());
 		}
@@ -114,18 +120,18 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		if(attacking) {
 			System.out.println(bullet.getPosY());
 			if (bullet.getPosY() > 5){
-			
+
 				velYFire -= 4;
 				bullet.setPosY(AA.getPosY()+velYFire);
-			
+
 			}
 			else {
-			
+
 				bullet.setPosY(AA.getPosY());
-				velYFire =0;
+				velYFire = 0;
 				attacking = false;
-		
-			
+
+
 			}
 
 		}
@@ -148,8 +154,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+//		x = x + velX;
+//		p.setPosX(x + velX);
+		for(Plane x: planes){
+			x.setPosX(x.getPosX()+x.getVelX());
+		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -162,6 +171,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setResizable(false);
 		setVisible(true);
 		locationGenerator(20);
+		planesGenerator(5);
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -188,10 +198,14 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Locations
 		for(SpotPos i:S_Pos) {
 			while(i!=null) {
-			Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
-			g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
-			break;
+				Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
+				g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
+				break;
 			}
+		}
+		//Planes
+		for(Plane x: planes){
+			g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
 		}
 		//Canon
 		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
@@ -201,9 +215,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			g.drawRect(bullet.getPosX()+18 , bullet.getPosY()+10, 21, 20);
 
 		}
+		tm.start();
 		repaint();
 	}
-	
+
 	public void locationGenerator(int max) {
 		for(int i=1;i<max;i++) {
 			int x = this.x/2;
@@ -217,12 +232,23 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			}
 			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
 			S_Pos[i-1].showPos();
-//			Location location = new Location(x,y, SpotType);
-//			contentpaint.add(location);
+			//			Location location = new Location(x,y, SpotType);
+			//			contentpaint.add(location);
 			this.x +=128;
 		}
-		
+
+
 	}
+	public void planesGenerator(int max) {
+		this.planes = new Plane[max];
+		for(int i =0;i<max;i++) {
+			Plane p = new Plane();
+			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
+			p.setPosY(S_Pos[p.getStratVertex()].getposy());
+			this.planes[i] = p;
+		}
+	}
+
 
 
 
