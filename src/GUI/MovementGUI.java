@@ -29,6 +29,8 @@ import data.structures.Dijkstra;
 import data.structures.Graph;
 import data.structures.Node;
 import data.structures.VertexList;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
 
 
 
@@ -42,10 +44,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	protected static Image dbImage, load;
 	ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	ArrayList<Integer> edgesList = new ArrayList<Integer>();
+	ArrayList<Integer> edgesList2 = new ArrayList<Integer>();
+	ArrayList<String> statsList = new ArrayList<String>();
 	AntiAircraft AA = new AntiAircraft();
 	Bullet bullet = new Bullet();
 
 	Boolean attacking = false;
+	Boolean refresh = true;
 	Boolean reachDestination = true;
 	long keyPressLength;
 	//generator 
@@ -196,7 +201,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 					if(x.index < max) {
 						x.setNextActualVertex();
 					}
-					
+
 				}
 			}else {
 				Plane p = new Plane();
@@ -212,7 +217,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		// TODO Auto-generated constructor stub
 
 		addKeyListener(this);
-		setLayout(null);
+		getContentPane().setLayout(null);
+
+
+
+		JLabel lblHola = new JLabel("Hola todo bien");
+		lblHola.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+
 		setTitle("Airwar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,1360,762);
@@ -238,14 +249,14 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	}
 	public void paint(Graphics g){
-		dbImage = createImage(1324,775);
+		dbImage = createImage(1350,775);
 		dbg = (Graphics2D) dbImage.getGraphics();
 		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		paintComponent(dbg);
 		g.drawImage(dbImage, 0, 0,null);
 	}
 	public void paintComponent(Graphics2D g) {
-		
+
 		//Background
 		g.drawImage(backgroundImg,2, 2, null);
 		g.setFont(new Font("Impact", Font.BOLD,24));
@@ -265,7 +276,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				x.setReac(new Rectangle(x.getPosX(),x.getPosY(),32,32));
 			}
 		}
-		
+
 		for(int n = 0; n< graph.getVertexList().length; n++) {
 			int intialX= S_Pos[n].getposX();
 			int initialY=S_Pos[n].getposy();
@@ -274,15 +285,15 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 			}
 			int counter = 0;
-//			int r = ThreadLocalRandom.current().nextInt(0, 256);
-//			int g1 = ThreadLocalRandom.current().nextInt(0, 256);
-//			int b = ThreadLocalRandom.current().nextInt(0, 256);
+			//			int r = ThreadLocalRandom.current().nextInt(0, 256);
+			//			int g1 = ThreadLocalRandom.current().nextInt(0, 256);
+			//			int b = ThreadLocalRandom.current().nextInt(0, 256);
 			for(int index =0; index <edgesList.size(); index++ ) {
 				int indicator = edgesList.get(index);
 				int destinationX = S_Pos[indicator].getposX();
 				int destinationY = S_Pos[indicator].getposy();
-				
-				
+
+
 				//g.setColor(new Color(r, g1, b));
 				g.setColor(Color.MAGENTA);
 				g.setStroke(new BasicStroke(3));
@@ -291,8 +302,30 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			}
 			edgesList.clear();
 
+
 		}
 
+		g.setColor(Color.WHITE);
+		g.fillRect(1222, 0, 500, 800);
+		g.setColor(Color.BLACK);
+
+		for(Integer c=0; c <19;c++) {
+			for(Node j = this.graph.getVertexList()[c].getHead(); j != null;j = j.getNext()) {
+				edgesList2.add(j.getData()[0]);
+			}
+			statsList.add("Vertex: "+c.toString());
+			statsList.add("Edges: "+edgesList2.toString());
+			edgesList2.clear();
+		}
+		
+		for(int l = 0; l<statsList.size();l++) {
+
+			Font f = new Font("serif", Font.PLAIN,15 );
+			g.setFont(f);
+			g.drawString(statsList.get(l), 1222, (l*15)+45);
+			
+		}
+		statsList.clear();
 		//Canon
 		//g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
