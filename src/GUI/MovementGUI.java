@@ -34,45 +34,99 @@ import data.structures.VertexList;
 
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MovementGUI.
+ */
 public class MovementGUI extends JFrame implements KeyListener, ActionListener, Runnable{
 
 
+	/** The background img. */
 	public Image backgroundImg = new ImageIcon("Images\\Map01.jpeg").getImage();
+	
+	/** The new vel. */
 	int x= 10, y=400 , velX=0 , actualVel=0, newVel = 0;
+	
+	/** The dbg. */
 	protected static Graphics2D dbg;
+	
+	/** The load. */
 	protected static Image dbImage, load;
+	
+	/** The bullet list. */
 	ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+	
+	/** The edges list. */
 	ArrayList<Integer> edgesList = new ArrayList<Integer>();
+	
+	/** The edges list 2. */
 	ArrayList<Integer> edgesList2 = new ArrayList<Integer>();
+	
+	/** The weight list. */
 	ArrayList<Integer> weightList = new ArrayList<Integer>();
+	
+	/** The stats list. */
 	ArrayList<String> statsList = new ArrayList<String>();
+	
+	/** The aa. */
 	AntiAircraft AA = new AntiAircraft();
+	
+	/** The bullet. */
 	Bullet bullet = new Bullet();
 
+	/** The attacking. */
 	Boolean attacking = false;
+	
+	/** The refresh. */
 	Boolean refresh = true;
+	
+	/** The reach destination. */
 	Boolean reachDestination = true;
+	
+	/** The key press length. */
 	long keyPressLength;
+	
+	/** The S pos. */
 	//generator 
 	public SpotPos S_Pos[] = new SpotPos[19];
+	
+	/** The Spot type. */
 	public int SpotType;
+	
+	/** The planes. */
 	public Plane planes[];
 
+	/** The key pressed millis. */
 	//keypress
 	private long keyPressedMillis;
+	
+	/** The already passed. */
 	private boolean alreadyPassed=false;
+	
+	/** The pause. */
 	boolean pause = false;
+	
+	/** The tm. */
 	//plane animation
 	Timer tm = new Timer(10,this);
 
+	/** The graph. */
 	//graph
 	public Graph graph;
 
+	/** The points. */
 	//points 
 	int points=0;
+	
+	/** The index. */
 	int index =0;
 
 
+	/**
+	 * Key pressed.
+	 *
+	 * @param e the e
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -90,6 +144,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	}
 
 
+	/**
+	 * Key released.
+	 *
+	 * @param e the e
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -108,11 +167,20 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 
 	}
+	
+	/**
+	 * Key typed.
+	 *
+	 * @param arg0 the arg 0
+	 */
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Run.
+	 */
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
@@ -130,6 +198,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 
 	}
+	
+	/**
+	 * Moving.
+	 *
+	 * @throws InterruptedException the interrupted exception
+	 */
 	private void moving() throws InterruptedException {
 
 		if(AA.getPosX()==4) {
@@ -147,6 +221,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		AA.setPosX(AA.getPosX()+velX);
 
 	}
+	
+	/**
+	 * Moving bullet.
+	 */
 	private void movingBullet(){
 
 		for(int i=0; i<bulletList.size();i++) {
@@ -174,14 +252,30 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 
+	/**
+	 * Gets the vel X.
+	 *
+	 * @return the vel X
+	 */
 	protected int getVelX() {
 		return velX;
 	}
+	
+	/**
+	 * Sets the vel X.
+	 *
+	 * @param velX the new vel X
+	 */
 	public void setVelX(int velX) {
 		this.velX = velX;
 	}
 
 	
+	/**
+	 * Action performed.
+	 *
+	 * @param e the e
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int i =0;
@@ -217,6 +311,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			}i++;
 		}
 	}
+	
+	/**
+	 * Instantiates a new movement GUI.
+	 */
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
 
@@ -251,6 +349,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 	}
+	
+	/**
+	 * Paint.
+	 *
+	 * @param g the g
+	 */
 	public void paint(Graphics g){
 		dbImage = createImage(1350,775);
 		dbg = (Graphics2D) dbImage.getGraphics();
@@ -258,6 +362,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		paintComponent(dbg);
 		g.drawImage(dbImage, 0, 0,null);
 	}
+	
+	/**
+	 * Paint component.
+	 *
+	 * @param g the g
+	 */
 	public void paintComponent(Graphics2D g) {
 
 		//Background
@@ -360,6 +470,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		repaint();
 	}
 
+	/**
+	 * Location generator.
+	 *
+	 * @param max the max
+	 */
 	public void locationGenerator(int max) {
 		for(int i=1;i<max;i++) {
 			int x = this.x/2;
@@ -380,6 +495,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 	}
+	
+	/**
+	 * Planes generator.
+	 *
+	 * @param max the max
+	 */
 	public void planesGenerator(int max) {
 		this.planes = new Plane[max];
 		for(int i=0;i<max;i++) {
@@ -392,6 +513,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 	}
 
+	/**
+	 * Collision.
+	 */
 	public void collision() {
 		for(Plane x: planes){
 			for(int i=0; i<bulletList.size();i++) {
