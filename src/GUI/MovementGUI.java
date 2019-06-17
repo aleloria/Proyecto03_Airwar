@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
@@ -43,6 +44,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 	ArrayList<Integer> edgesList = new ArrayList<Integer>();
 	ArrayList<Integer> edgesList2 = new ArrayList<Integer>();
+	ArrayList<Integer> weightList = new ArrayList<Integer>();
 	ArrayList<String> statsList = new ArrayList<String>();
 	AntiAircraft AA = new AntiAircraft();
 	Bullet bullet = new Bullet();
@@ -59,7 +61,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	//keypress
 	private long keyPressedMillis;
 	private boolean alreadyPassed=false;
-
+	boolean pause = false;
 	//plane animation
 	Timer tm = new Timer(10,this);
 
@@ -81,6 +83,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				keyPressedMillis = System.currentTimeMillis();
 				alreadyPassed=true;
 			}
+		}
+		if(keyCode == e.VK_P) {
+			pause = true;
 		}
 	}
 
@@ -113,10 +118,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		// TODO Auto-generated method stub
 		try{
 			while(true){
-
-				moving();
-				movingBullet();
-				Thread.sleep(10);
+				if(pause == false) {
+					moving();
+					movingBullet();
+					Thread.sleep(10);
+				}
 			}
 		}catch(Exception e){
 			System.out.println("!Uh-oh, something went wrong!.");
@@ -175,7 +181,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		this.velX = velX;
 	}
 
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int i =0;
@@ -219,13 +225,12 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 
-		JLabel lblHola = new JLabel("Hola todo bien");
-		lblHola.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+
 
 		setTitle("Airwar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,1360,762);
-		setResizable(false);
+		setBounds(0,0,1400,800);
+		setResizable(true);
 		setVisible(true);
 		this.graph = new Graph(19);
 		locationGenerator(20);
@@ -258,7 +263,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Background
 		g.drawImage(backgroundImg,2, 2, null);
 		g.setFont(new Font("Impact", Font.BOLD,24));
-		g.drawString(Integer.toString(points), 1190, 50);
+		g.drawString(Integer.toString(points), 19, 50);
 		//Locations
 		for(SpotPos i:S_Pos) {
 			while(i!=null) {
@@ -304,25 +309,31 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		}
 
 		g.setColor(Color.WHITE);
-		g.fillRect(1222, 0, 500, 800);
+		g.fillRect(1205, 0, 500, 800);
 		g.setColor(Color.BLACK);
 
 		for(Integer c=0; c <19;c++) {
 			for(Node j = this.graph.getVertexList()[c].getHead(); j != null;j = j.getNext()) {
 				edgesList2.add(j.getData()[0]);
+				weightList.add(j.getData()[1]);
+
 			}
-			statsList.add("Vertex: "+c.toString());
-			statsList.add("Edges: "+edgesList2.toString());
-			edgesList2.clear();
-		}
 		
+			statsList.add("Vertex: "+c.toString());
+			statsList.add("E: "+edgesList2.toString());
+			statsList.add("W: "+weightList.toString());
+			edgesList2.clear();
+			weightList.clear();
+		}
+		repaint();
 		for(int l = 0; l<statsList.size();l++) {
 
-			Font f = new Font("serif", Font.PLAIN,15 );
+			Font f = new Font("serif", Font.PLAIN,14 );
 			g.setFont(f);
-			g.drawString(statsList.get(l), 1222, (l*15)+45);
-			
+			g.drawString(statsList.get(l), 1207, (l*13)+42);
+
 		}
+		
 		statsList.clear();
 		//Canon
 		//g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
@@ -391,7 +402,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 					for(Node vertex = vertexList.getHead(); vertex!=null;vertex=vertex.getNext() ) {
 						if(vertex.getData()[0]==x.getFinalVertex()) {
 							System.out.println("PESO ORIGINAL: "+vertex.getData()[1]);
+							
 							vertex.getData()[1]+=100;
+							System.out.println("PESO NUEVOOOOO: "+vertex.getData()[1]);
+							
 						}
 					}
 				}
