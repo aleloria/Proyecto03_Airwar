@@ -20,8 +20,8 @@ public class StartWindow extends JFrame {
 	private Image Image = new ImageIcon("Images/Start_Window.jpeg").getImage();
 	private Image play = new ImageIcon("Images/play.png").getImage();
 	private JPanel contentpane;
-	
-	
+
+
 	public StartWindow() {
 		setLayout(null);
 		setTitle("Airwar");
@@ -30,18 +30,18 @@ public class StartWindow extends JFrame {
 		setUndecorated(true);
 		setResizable(true);
 		setVisible(true);
-		
 
-		
+
+
 		contentpane = new JPanel();
 		contentpane.setBounds(0,0,850,478);
 		contentpane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentpane.setLayout(null);
-		
+
 		JLabel background = new JLabel();
 		background.setBounds(0, 0, 850, 478);
 		background.setIcon(new ImageIcon(Image));
-		
+
 		JButton btn = new JButton();
 		btn.setBounds(350, 235, 128,128);
 		btn.setIcon(new ImageIcon(play));
@@ -49,20 +49,20 @@ public class StartWindow extends JFrame {
 		btn.setContentAreaFilled(false);
 		btn.setBorderPainted(false);
 		btn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MovementGUI p = new MovementGUI();
 				Thread t1 = new Thread(p);
-		        t1.start();
-		        StartWindow.this.dispose();
+				t1.start();
+				StartWindow.this.dispose();
 			}
 		});
-		
+
 		contentpane.add(btn);
 		contentpane.add(background);
 		this.add(contentpane);
 	}
-	
+
 
 }
