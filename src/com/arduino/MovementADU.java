@@ -296,33 +296,33 @@ public class MovementADU extends JFrame implements KeyListener, ActionListener, 
 			}
 		}
 
-		for(int n = 0; n< graph.getVertexList().length; n++) {
-			int intialX= S_Pos[n].getposX();
-			int initialY=S_Pos[n].getposy();
-			for(Node j = this.graph.getVertexList()[n].getHead(); j != null;j = j.getNext()) {
-				edgesList.add(j.getData()[0]);
-
-			}
-			int counter = 0;
-			//			int r = ThreadLocalRandom.current().nextInt(0, 256);
-			//			int g1 = ThreadLocalRandom.current().nextInt(0, 256);
-			//			int b = ThreadLocalRandom.current().nextInt(0, 256);
-			for(int index =0; index <edgesList.size(); index++ ) {
-				int indicator = edgesList.get(index);
-				int destinationX = S_Pos[indicator].getposX();
-				int destinationY = S_Pos[indicator].getposy();
-
-
-				//g.setColor(new Color(r, g1, b));
-				g.setColor(Color.MAGENTA);
-				g.setStroke(new BasicStroke(3));
-				g.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
-				counter+=10;
-			}
-			edgesList.clear();
-
-
-		}
+//		for(int n = 0; n< graph.getVertexList().length; n++) {
+//			int intialX= S_Pos[n].getposX();
+//			int initialY=S_Pos[n].getposy();
+//			for(Node j = this.graph.getVertexList()[n].getHead(); j != null;j = j.getNext()) {
+//				edgesList.add(j.getData()[0]);
+//
+//			}
+//			int counter = 0;
+//			//			int r = ThreadLocalRandom.current().nextInt(0, 256);
+//			//			int g1 = ThreadLocalRandom.current().nextInt(0, 256);
+//			//			int b = ThreadLocalRandom.current().nextInt(0, 256);
+//			for(int index =0; index <edgesList.size(); index++ ) {
+//				int indicator = edgesList.get(index);
+//				int destinationX = S_Pos[indicator].getposX();
+//				int destinationY = S_Pos[indicator].getposy();
+//
+//
+//				//g.setColor(new Color(r, g1, b));
+//				g.setColor(Color.MAGENTA);
+//				g.setStroke(new BasicStroke(3));
+//				g.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
+//				counter+=10;
+//			}
+//			edgesList.clear();
+//
+//
+//		}
 
 		g.setColor(Color.WHITE);
 		g.fillRect(1222, 0, 500, 800);
@@ -360,7 +360,7 @@ public class MovementADU extends JFrame implements KeyListener, ActionListener, 
 				g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
 				//g.setColor(Color.WHITE);
 				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
-				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+ 
 			}
 		}
 
@@ -511,7 +511,7 @@ public class MovementADU extends JFrame implements KeyListener, ActionListener, 
 					bullets.setPosX(AA.getPosX());
 
 
-					bullets.setKeyPressLength(1);
+					bullets.setKeyPressLength(2);
 					bulletList.add(bullets);
 					alreadyPassed=false;
 				}
@@ -519,8 +519,8 @@ public class MovementADU extends JFrame implements KeyListener, ActionListener, 
 					if(AA.getPosX()>4) {
 						setVelX(-4);
 					}
-					setVelX(0);
 					AA.setPosX(AA.getPosX()+velX);
+					setVelX(0);
 				}
 				if(inputLine.contains("Der")) {
 					if (AA.getPosX()<1110) {

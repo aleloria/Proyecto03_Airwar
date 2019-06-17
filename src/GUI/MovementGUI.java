@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.Timer;
 
 import com.logic.Location;
@@ -408,7 +407,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				int destinationY = S_Pos[indicator].getposy();
 
 
-				g.setColor(new Color(r, g1, b));
+				g.setColor(new Color(0, 0, 0));
 				//g.setColor(Color.WHITE);
 				 //creates a copy of the Graphics instance
 		        Graphics2D g2d = (Graphics2D) g.create();
