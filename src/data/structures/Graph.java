@@ -73,7 +73,8 @@ public class Graph {
 	 *
 	 * @param amount the amount
 	 */
-	Graph(Integer amount){
+
+	public Graph(Integer amount){
 		
 		this.vertexAmount = amount;
 		this.vertexList = new VertexList[this.vertexAmount];
@@ -91,6 +92,7 @@ public class Graph {
  	 *adds a connection between two vertices inside the graph, the connection goes both ways,
  	 *this means that a new node is created in the linked list of the index of the adjacency list
  	 *that corresponds to both vertices. 
+
  	 * @param weight the weight
  	 * @param source the source
  	 * @param destination the destination

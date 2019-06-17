@@ -1,21 +1,26 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 import com.logic.Location;
+import com.logic.Plane;
 import com.logic.SpotPos;
+
+import data.structures.Graph;
 
 
 
@@ -23,7 +28,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 
 	public Image backgroundImg = new ImageIcon("Images\\Map01.jpeg").getImage();
-	int x= 10, y=400 , velX=0 , velYFire=0;
+	int x= 10, y=400 , velX=0 , actualVel=0, newVel = 0;
 	protected static Graphics2D dbg;
 	protected static Image dbImage, load;
 	ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
@@ -33,9 +38,21 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	Boolean attacking = false;
 	Boolean reachDestination = true;
+	long keyPressLength;
 	//generator 
 	public SpotPos S_Pos[] = new SpotPos[19];
-    public int SpotType;
+	public int SpotType;
+	public Plane planes[];
+
+	//keypress
+	private long keyPressedMillis;
+	private boolean alreadyPassed=false;
+
+	//plane animation
+	Timer tm = new Timer(10,this);
+
+	//graph
+	public Graph graph;
 
 
 
@@ -43,34 +60,31 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		if (keyCode == e.VK_LEFT) {
 
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-
+		if (keyCode == e.VK_SPACE ) {
+			if(alreadyPassed==false) {
+				keyPressedMillis = System.currentTimeMillis();
+				alreadyPassed=true;
+			}
 		}
 	}
+
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-		if (keyCode == e.VK_LEFT) {
-
-		}
-		if (keyCode == e.VK_RIGHT) {
-
-
-		}
 
 		if (keyCode == e.VK_SPACE ) {
-			if(reachDestination) {
-				attacking = true;
-				bullet.setPosX(AA.getPosX());
-				Bullet bullets = new Bullet();
-				bulletList.add(bullets);
-			}
+			keyPressLength = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - keyPressedMillis)+1;
+			attacking = true;
+			Bullet bullets = new Bullet();
+			bullets.setPosX(AA.getPosX());
+
+
+			bullets.setKeyPressLength(keyPressLength);
+			bulletList.add(bullets);
+			alreadyPassed=false;
+			//System.out.println("Key Pressed "+keyPressLength+" s");
 		}
 
 	}
@@ -96,7 +110,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	}
 	private void moving() throws InterruptedException {
-	
+
 		if(AA.getPosX()==4) {
 			setVelX(4);
 
@@ -112,47 +126,60 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		AA.setPosX(AA.getPosX()+velX);
 
 	}
-	private void movingBullet() throws InterruptedException {
-		if(attacking) {
-		
-			if (bullet.getPosY() > 5){
-				reachDestination = false;
-				velYFire -= 4;
-				bullet.setPosY(AA.getPosY()+velYFire);
+	private void movingBullet(){
+
+		for(int i=0; i<bulletList.size();i++) {
+
+			if (bulletList.get(i).getPosY() > 5){
+
+				actualVel = bulletList.get(i).getVelyFire();
+				bulletList.get(i).setVelyFire((int) (3* -bulletList.get(i).getKeyPressLength()));
+				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
+
 
 			}
 			else {
+				if(!bulletList.isEmpty()) {
+					bulletList.remove(i);
 
-				bullet.setPosY(AA.getPosY());
-				velYFire =0;
-				attacking = false;
-				reachDestination = true;
-
+				}
 
 			}
-
 		}
 
+
+
 	}
+
+
+
 	protected int getVelX() {
 		return velX;
 	}
 	public void setVelX(int velX) {
 		this.velX = velX;
 	}
-	public int getVelYFire() {
-		return velYFire;
-	}
-
-	public void setVelYFire(int velYFire) {
-		this.velYFire = velYFire;
-	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		for(Plane x: planes){
+			if(!x.isKill()) {
+				int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+				int posX = x.getPosX();
+				int posY = x.getPosY();
 
+				double deltaX = posFinal[0] - posX;
+				double deltaY = posFinal[1] - posY;
+				double angle = Math.atan2( deltaY, deltaX );	
+
+				posX +=  Math.round(Math.cos( angle ));
+				posY +=  Math.round(Math.sin( angle ));			
+				x.setPosX(posX);
+				x.setPosY(posY);
+				//				repaint();
+			}
+		}
 	}
 	public MovementGUI() {
 		// TODO Auto-generated constructor stub
@@ -165,6 +192,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setResizable(false);
 		setVisible(true);
 		locationGenerator(20);
+		planesGenerator(20);
+		this.graph = new Graph(19);
+		graph.randomPathGenerator();
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -191,25 +221,43 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Locations
 		for(SpotPos i:S_Pos) {
 			while(i!=null) {
-			Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
-			g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
-			break;
+				Location loc = new Location(i.getposX(),i.getposy(),i.getspot());
+				g.drawImage(loc.getImg(),i.getposX(), i.getposy(), null);
+				break;
+			}
+		}
+		//Planes
+		for(Plane x: planes){
+			if(!x.isKill()) {
+				g.drawImage(x.getImageData(),x.getPosX(),x.getPosY(), null);
+				x.setReac(new Rectangle(x.getPosX(),x.getPosY(),32,32));
 			}
 		}
 		//Canon
-		g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
+		//g.drawRect(AA.getPosX()-1, AA.getPosY()-4, 167, 197);
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 
-		if(attacking) {
-			for(int i =0;i<2;i++) {
-				g.drawImage(bullet.getBulletImg(),bullet.getPosX()+(i*100), AA.getPosY()+velYFire, null);
-				g.setColor(Color.WHITE);
-				g.drawRect(bullet.getPosX()+(i*100)+18 , bullet.getPosY()+10, 21, 20);
+		for(int i=0; i<bulletList.size();i++) {
+			if(bulletList.get(i).getVelyFire()<-9) {
+				g.drawImage(bulletList.get(i).getBullet2(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
+				//g.setColor(Color.WHITE);
+				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 50, 50);
+				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+			}
+			else {
+				g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
+				//g.setColor(Color.WHITE);
+				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
+				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
 			}
 		}
+
+
+		collision();
+		tm.start();
 		repaint();
 	}
-	
+
 	public void locationGenerator(int max) {
 		for(int i=1;i<max;i++) {
 			int x = this.x/2;
@@ -223,15 +271,36 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			}
 			S_Pos[i-1] = new SpotPos(x,y,SpotType,i);
 			S_Pos[i-1].showPos();
-//			Location location = new Location(x,y, SpotType);
-//			contentpaint.add(location);
+			//			Location location = new Location(x,y, SpotType);
+			//			contentpaint.add(location);
 			this.x +=128;
 		}
-		
+
+
+	}
+	public void planesGenerator(int max) {
+		this.planes = new Plane[max];
+		for(int i=0;i<max;i++) {
+			Plane p = new Plane();
+			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
+			p.setPosY(S_Pos[p.getStratVertex()].getposy());
+			this.planes[i] = p;
+		}
 	}
 
-
-
-
-
+	public void collision() {
+		for(Plane x: planes){
+			for(int i=0; i<bulletList.size();i++) {
+				if(x.getReac().intersects(bulletList.get(i).getRect())) {
+					x.setKill(true);
+				}
+			}
+		}
+	}
 }
+
+
+
+
+
+

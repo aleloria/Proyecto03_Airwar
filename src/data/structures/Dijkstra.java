@@ -1,4 +1,4 @@
-package navigation;
+package data.structures;
 import java.util.Arrays;
 
 import data.structures.Graph;
@@ -10,7 +10,7 @@ public class Dijkstra {
 	private VertexList[] vertexList = new VertexList[1];
 	private Integer[] unvisited = new Integer[1];
 	private Integer vertexAmount = 0;
-	private Integer[] path = new Integer[1];
+	public Integer[] path = new Integer[1];
 	private Integer[] distances = new Integer[1];
 	private Integer[] previousVertex = new Integer[1];
 	private boolean hasElements= true;
