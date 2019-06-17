@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -14,12 +15,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.Timer;
 
 import com.logic.Location;
 import com.logic.Plane;
 import com.logic.SpotPos;
 
+import data.structures.Dijkstra;
 import data.structures.Graph;
 
 
@@ -54,6 +57,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	//graph
 	public Graph graph;
 
+	//points 
+	int points=0;
 
 
 	@Override
@@ -117,7 +122,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 		}
 
-		if (AA.getPosX()==1104) {
+		if (AA.getPosX()==1124) {
 
 			setVelX(-4);
 
@@ -191,10 +196,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setBounds(0,0,1360,762);
 		setResizable(false);
 		setVisible(true);
-		locationGenerator(20);
-		planesGenerator(20);
 		this.graph = new Graph(19);
 		graph.randomPathGenerator();
+		//lbl
+		locationGenerator(20);
+		planesGenerator(20);
 		Thread t=new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
@@ -218,6 +224,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void paintComponent(Graphics g) {
 		//Background
 		g.drawImage(backgroundImg,2, 2, null);
+		g.setFont(new Font("Impact", Font.BOLD,24));
+		g.drawString(Integer.toString(points), 1200, 50);
 		//Locations
 		for(SpotPos i:S_Pos) {
 			while(i!=null) {
@@ -285,6 +293,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
 			p.setPosY(S_Pos[p.getStratVertex()].getposy());
 			this.planes[i] = p;
+//			Dijkstra d = new Dijkstra(this.graph,p.getStratVertex(),p.getFinalVertex());
+//			p.path = d.path;
 		}
 	}
 
@@ -293,6 +303,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			for(int i=0; i<bulletList.size();i++) {
 				if(x.getReac().intersects(bulletList.get(i).getRect())) {
 					x.setKill(true);
+					this.points += 1;
+					System.out.println(points);
 				}
 			}
 		}

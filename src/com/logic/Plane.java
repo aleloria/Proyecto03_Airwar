@@ -13,7 +13,7 @@ public class Plane {
     private int stratVertex;
     private int finalVertex;
     //vertex
-    public Integer[] actualVertex;
+    public Integer[] path;
     int index = 0;
     
     //Rect
@@ -27,6 +27,7 @@ public class Plane {
 
     public Plane() {
 		road();
+		this.reac = new Rectangle();
 	}
 	public int getPosX() {
 		return posX;
@@ -77,7 +78,7 @@ public class Plane {
 		}setFinalVertex(finalV);
 	}
 	public int getActualVertex() {
-		return actualVertex[this.index];
+		return path[this.index];
 	}
 	public void setNextActualVertex() {
 		this.index += 1;
@@ -86,7 +87,7 @@ public class Plane {
 		return reac;
 	}
 	public void setReac(Rectangle reac) {
-		this.reac = reac;
+		this.reac.setBounds(reac);
 	}
 	public boolean isKill() {
 		return kill;

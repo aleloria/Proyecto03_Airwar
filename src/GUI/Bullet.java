@@ -33,6 +33,7 @@ public class Bullet {
 	public Bullet(){
         //this.posX=x;
         //this.posY=y;
+		this.rect = new Rectangle();
     
 
     }
@@ -62,7 +63,7 @@ public class Bullet {
 	}
 
 	public void setRect(Rectangle rect) {
-		this.rect = rect;
+		this.rect.setBounds(rect);
 	}
     public Image getBullet2() {
 		return bullet2;
