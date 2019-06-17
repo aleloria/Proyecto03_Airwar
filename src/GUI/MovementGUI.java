@@ -373,6 +373,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Background
 		g.drawImage(backgroundImg,2, 2, null);
 		g.setFont(new Font("Impact", Font.BOLD,24));
+		g.setColor(Color.WHITE);
 		g.drawString(Integer.toString(points), 19, 50);
 		//Locations
 		for(SpotPos i:S_Pos) {
@@ -414,6 +415,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 		        //set the stroke of the copy, not the original 
 		        Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+		        g2d.setColor(Color.RED);
 		        g2d.setStroke(dashed);
 		        g2d.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
 
@@ -537,7 +539,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 						if(vertex.getData()[0]==x.getFinalVertex()) {
 							System.out.println("PESO ORIGINAL: "+vertex.getData()[1]);
 							
-							vertex.getData()[1]+=100;
+							vertex.getData()[1]+=333;
 							System.out.println("PESO NUEVOOOOO: "+vertex.getData()[1]);
 							
 						}
