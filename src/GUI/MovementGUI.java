@@ -2,8 +2,6 @@ package GUI;
 
 
 import java.awt.Font;
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -18,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.Timer;
 
 import com.logic.Location;
@@ -173,7 +170,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public void actionPerformed(ActionEvent e) {
 		for(Plane x: planes){
 			if(!x.isKill()) {
-				int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+				int[] posFinal = {S_Pos[x.getActualVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
 				int posX = x.getPosX();
 				int posY = x.getPosY();
 
@@ -185,7 +182,14 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				posY +=  Math.round(Math.sin( angle ));			
 				x.setPosX(posX);
 				x.setPosY(posY);
-				//				repaint();
+				int[] actualPos = {x.getPosX(),x.getPosY()};
+				if(posFinal[0]==actualPos[0] && posFinal[1]==actualPos[1] ) {
+					int max = x.path.length-1;
+					if(x.index < max) {
+						x.setNextActualVertex();
+					}
+					
+				}
 			}
 		}
 	}
