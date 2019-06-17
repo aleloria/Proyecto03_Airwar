@@ -1,6 +1,9 @@
 package GUI;
 
+
 import java.awt.Font;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -246,11 +249,11 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 
 		for(int i=0; i<bulletList.size();i++) {
-			if(bulletList.get(i).getVelyFire()<-9) {
+			if(bulletList.get(i).getVelyFire()<-5) {
 				g.drawImage(bulletList.get(i).getBullet2(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
 				//g.setColor(Color.WHITE);
-				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 50, 50);
-				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+				//g.drawRect(bulletList.get(i).getPosX()+28 , bulletList.get(i).getPosY()+10, 43, 50);
+				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+28,bulletList.get(i).getPosY()+10,43, 50));
 			}
 			else {
 				g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
