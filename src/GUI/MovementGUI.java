@@ -24,6 +24,8 @@ import com.logic.SpotPos;
 
 import data.structures.Dijkstra;
 import data.structures.Graph;
+import data.structures.Node;
+import data.structures.VertexList;
 
 
 
@@ -320,7 +322,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				if(x.getReac().intersects(bulletList.get(i).getRect())) {
 					x.setKill(true);
 					this.points += 1;
-					System.out.println(points);
+					VertexList vertexList=this.graph.getVertexList()[x.getActualVertex()];
+					for(Node vertex = vertexList.getHead(); vertex!=null;vertex=vertex.getNext() ) {
+						if(vertex.getData()[0]==x.getFinalVertex()) {
+							System.out.println("PESO ORIGINAL: "+vertex.getData()[1]);
+							vertex.getData()[1]+=100;
+						}
+					}
 				}
 			}
 		}
