@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -288,19 +289,29 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 			}
 			int counter = 0;
-			//			int r = ThreadLocalRandom.current().nextInt(0, 256);
-			//			int g1 = ThreadLocalRandom.current().nextInt(0, 256);
-			//			int b = ThreadLocalRandom.current().nextInt(0, 256);
+						int r = ThreadLocalRandom.current().nextInt(0, 256);
+						int g1 = ThreadLocalRandom.current().nextInt(0, 256);
+						int b = ThreadLocalRandom.current().nextInt(0, 256);
 			for(int index =0; index <edgesList.size(); index++ ) {
 				int indicator = edgesList.get(index);
 				int destinationX = S_Pos[indicator].getposX();
 				int destinationY = S_Pos[indicator].getposy();
 
 
-				//g.setColor(new Color(r, g1, b));
-				g.setColor(Color.MAGENTA);
-				g.setStroke(new BasicStroke(3));
-				g.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
+				g.setColor(new Color(r, g1, b));
+				//g.setColor(Color.WHITE);
+				 //creates a copy of the Graphics instance
+		        Graphics2D g2d = (Graphics2D) g.create();
+
+		        //set the stroke of the copy, not the original 
+		        Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+		        g2d.setStroke(dashed);
+		        g2d.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
+
+		        //gets rid of the copy
+		        g2d.dispose();
+				//g.setStroke(new BasicStroke(3));
+				//g.drawLine(intialX+30, initialY+15+counter, destinationX+30, destinationY+15+counter);
 				counter+=10;
 			}
 			edgesList.clear();
@@ -325,13 +336,13 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			edgesList2.clear();
 			weightList.clear();
 		}
-		repaint();
+		
 		for(int l = 0; l<statsList.size();l++) {
 
-			Font f = new Font("serif", Font.PLAIN,14 );
+			Font f = new Font("serif", Font.PLAIN,13 );
 			g.setFont(f);
 			g.drawString(statsList.get(l), 1207, (l*13)+42);
-
+			repaint();
 		}
 		
 		statsList.clear();
