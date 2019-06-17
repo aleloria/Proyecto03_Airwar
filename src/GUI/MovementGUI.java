@@ -201,7 +201,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setVisible(true);
 		this.graph = new Graph(19);
 		locationGenerator(20);
-		graph.randomPathGenerator();
+		graph.randomPathGenerator(this.S_Pos);
 		//lbl
 		planesGenerator(20);
 		Thread t=new Thread() {
@@ -296,8 +296,8 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
 			p.setPosY(S_Pos[p.getStratVertex()].getposy());
 			this.planes[i] = p;
-//			Dijkstra d = new Dijkstra(this.graph,p.getStratVertex(),p.getFinalVertex());
-//			p.path = d.path;
+			Dijkstra d = new Dijkstra(this.graph,p.getStratVertex(),p.getFinalVertex());
+			p.path = d.path;
 		}
 	}
 
