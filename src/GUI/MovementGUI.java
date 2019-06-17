@@ -238,10 +238,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 
 		for(int i=0; i<bulletList.size();i++) {
-			if(bulletList.get(i).getVelyFire()<-9) {
+			if(bulletList.get(i).getVelyFire()<-6) {
 				g.drawImage(bulletList.get(i).getBullet2(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
 				//g.setColor(Color.WHITE);
-				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 50, 50);
+				//     g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 50, 50);
 				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
 			}
 			else {
