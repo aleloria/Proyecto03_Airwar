@@ -63,6 +63,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	//points 
 	int points=0;
+	int index =0;
 
 
 	@Override
@@ -172,9 +173,10 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int i =0;
 		for(Plane x: planes){
 			if(!x.isKill()) {
-				int[] posFinal = {S_Pos[x.getFinalVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
+				int[] posFinal = {S_Pos[x.getActualVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
 				int posX = x.getPosX();
 				int posY = x.getPosY();
 
@@ -186,8 +188,22 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 				posY +=  Math.round(Math.sin( angle ));			
 				x.setPosX(posX);
 				x.setPosY(posY);
-				//				repaint();
-			}
+				int[] actualPos = {x.getPosX(),x.getPosY()};
+				if(posFinal[0]==actualPos[0] && posFinal[1]==actualPos[1] ) {
+					int max = x.path.length-1;
+					if(x.index < max) {
+						x.setNextActualVertex();
+					}
+					
+				}
+			}else {
+				Plane p = new Plane();
+				p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
+				p.setPosY(S_Pos[p.getStratVertex()].getposy());
+				this.planes[i] = p;
+				Dijkstra d = new Dijkstra(this.graph,p.getStratVertex(),p.getFinalVertex());
+				p.path = d.path;
+			}i++;
 		}
 	}
 	public MovementGUI() {

@@ -14,7 +14,7 @@ public class Plane {
     private int finalVertex;
     //vertex
     public Integer[] path;
-    int index = 0;
+    public int index = 0;
     
     //Rect
     public Rectangle reac;
