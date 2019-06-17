@@ -14,11 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.Timer;
 
 import com.logic.Location;
@@ -29,8 +29,6 @@ import data.structures.Dijkstra;
 import data.structures.Graph;
 import data.structures.Node;
 import data.structures.VertexList;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
 
 
 
@@ -260,7 +258,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		//Background
 		g.drawImage(backgroundImg,2, 2, null);
 		g.setFont(new Font("Impact", Font.BOLD,24));
-		g.drawString(Integer.toString(points), 1200, 50);
+		g.drawString(Integer.toString(points), 1190, 50);
 		//Locations
 		for(SpotPos i:S_Pos) {
 			while(i!=null) {
