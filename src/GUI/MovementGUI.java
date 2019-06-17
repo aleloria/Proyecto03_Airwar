@@ -59,6 +59,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	//points 
 	int points=0;
+	int index =0;
 
 
 	@Override
@@ -168,6 +169,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int i =0;
 		for(Plane x: planes){
 			if(!x.isKill()) {
 				int[] posFinal = {S_Pos[x.getActualVertex()].getposX(),S_Pos[x.getFinalVertex()].getposy()};
@@ -190,7 +192,14 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 					}
 					
 				}
-			}
+			}else {
+				Plane p = new Plane();
+				p.setPosX(S_Pos[p.getStratVertex()].getposX()); 
+				p.setPosY(S_Pos[p.getStratVertex()].getposy());
+				this.planes[i] = p;
+				Dijkstra d = new Dijkstra(this.graph,p.getStratVertex(),p.getFinalVertex());
+				p.path = d.path;
+			}i++;
 		}
 	}
 	public MovementGUI() {
