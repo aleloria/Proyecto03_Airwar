@@ -73,6 +73,7 @@ public class Graph {
 	 *
 	 * @param amount the amount
 	 */
+
 	public Graph(Integer amount){
 		
 		this.vertexAmount = amount;
@@ -88,6 +89,10 @@ public class Graph {
 	 /**
  	 * Adds the edge.
  	 *
+ 	 *adds a connection between two vertices inside the graph, the connection goes both ways,
+ 	 *this means that a new node is created in the linked list of the index of the adjacency list
+ 	 *that corresponds to both vertices. 
+
  	 * @param weight the weight
  	 * @param source the source
  	 * @param destination the destination
