@@ -1,10 +1,21 @@
 package data.structures;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VertexList.
+ */
 public class VertexList {
 	
+	/** The vertex. */
 	private Integer vertex=0;
+	
+	/** The head. */
 	private Node head;
+	
+	/** The last. */
 	private Node last;
+	
+	/** The length. */
 	private Integer length=0;
 	
 	
@@ -12,49 +23,95 @@ public class VertexList {
 	
 	
 	
+	/**
+	 * Gets the vertex.
+	 *
+	 * @return the vertex
+	 */
 	public Integer getVertex() {
 		return vertex;
 	}
 
 
+	/**
+	 * Sets the vertex.
+	 *
+	 * @param vertex the new vertex
+	 */
 	public void setVertex(Integer vertex) {
 		this.vertex = vertex;
 	}
 
 
+	/**
+	 * Gets the length.
+	 *
+	 * @return the length
+	 */
 	public Integer getLength() {
 		return length;
 	}
 
 
+	/**
+	 * Sets the length.
+	 *
+	 * @param length the new length
+	 */
 	public void setLength(Integer length) {
 		this.length = length;
 	}
 
 
+	/**
+	 * Gets the head.
+	 *
+	 * @return the head
+	 */
 	public Node getHead() {
 		return head;
 	}
 
 
+	/**
+	 * Sets the head.
+	 *
+	 * @param head the new head
+	 */
 	public void setHead(Node head) {
 		this.head = head;
 	}
 
 
 
+	/**
+	 * Gets the last.
+	 *
+	 * @return the last
+	 */
 	public Node getLast() {
 		return last;
 	}
 
 
 
+	/**
+	 * Sets the last.
+	 *
+	 * @param last the new last
+	 */
 	public void setLast(Node last) {
 		this.last = last;
 	}
 
 
 
+	/**
+	 * Append.
+	 *
+	 * @param vertex the vertex
+	 * @param weight the weight
+	 */
 	public void append(Integer vertex, Integer weight) {
 
 		if(this.head==null) {
@@ -74,6 +131,11 @@ public class VertexList {
 
 	}
 	
+	/**
+	 * Erase data.
+	 *
+	 * @param value the value
+	 */
 	public void eraseData(Integer value) {
 		if (head.getData()[0].equals(value)) {
 			this.head=this.head.getNext();
@@ -97,6 +159,12 @@ public class VertexList {
 
 	}
 	
+	/**
+	 * Search.
+	 *
+	 * @param criteria the criteria
+	 * @return true, if successful
+	 */
 	public boolean search(int criteria) { 
 		boolean result=false;
 		Node current = this.head;
@@ -116,6 +184,9 @@ public class VertexList {
 		return result;     
 	}
 	
+	/**
+	 * Traverse list.
+	 */
 	public void traverseList() {
 		String data="";
 		for(Node current=this.head;current!=null;current=current.getNext()) {

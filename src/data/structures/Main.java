@@ -7,8 +7,7 @@ import navigation.Dijkstra;
 
 public class Main {
 	
-	static Graph graph = new Graph(10);
-	
+	static Graph graph = new Graph(19);
 	static Dijkstra path;
 	public static void main(String[] args) {
 	
