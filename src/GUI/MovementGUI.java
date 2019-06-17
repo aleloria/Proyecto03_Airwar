@@ -200,9 +200,9 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		setResizable(false);
 		setVisible(true);
 		this.graph = new Graph(19);
+		locationGenerator(20);
 		graph.randomPathGenerator();
 		//lbl
-		locationGenerator(20);
 		planesGenerator(20);
 		Thread t=new Thread() {
 			public void run() {
