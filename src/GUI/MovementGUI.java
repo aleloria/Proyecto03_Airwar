@@ -43,7 +43,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 	public SpotPos S_Pos[] = new SpotPos[19];
 	public int SpotType;
 	public Plane planes[];
-	
+
 	//keypress
 	private long keyPressedMillis;
 	private boolean alreadyPassed=false;
@@ -75,14 +75,16 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		int keyCode = e.getKeyCode();
 
 		if (keyCode == e.VK_SPACE ) {
-		
+			keyPressLength = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - keyPressedMillis)+1;
 			attacking = true;
 			Bullet bullets = new Bullet();
 			bullets.setPosX(AA.getPosX());
+
+
+			bullets.setKeyPressLength(keyPressLength);
 			bulletList.add(bullets);
-			keyPressLength = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - keyPressedMillis)+1;
-		    alreadyPassed=false;
-		    System.out.println("Key Pressed "+keyPressLength+" s");
+			alreadyPassed=false;
+			//System.out.println("Key Pressed "+keyPressLength+" s");
 		}
 
 	}
@@ -131,7 +133,7 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 			if (bulletList.get(i).getPosY() > 5){
 
 				actualVel = bulletList.get(i).getVelyFire();
-				bulletList.get(i).setVelyFire((int) (3* -keyPressLength));
+				bulletList.get(i).setVelyFire((int) (3* -bulletList.get(i).getKeyPressLength()));
 				bulletList.get(i).setPosY(bulletList.get(i).getPosY()+bulletList.get(i).getVelyFire());
 
 
@@ -236,10 +238,18 @@ public class MovementGUI extends JFrame implements KeyListener, ActionListener, 
 		g.drawImage(AA.getImageData(),AA.getPosX(), AA.getPosY(), null);
 
 		for(int i=0; i<bulletList.size();i++) {
-			g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
-			//g.setColor(Color.WHITE);
-			//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
-			bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+			if(bulletList.get(i).getVelyFire()<-9) {
+				g.drawImage(bulletList.get(i).getBullet2(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
+				//g.setColor(Color.WHITE);
+				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 50, 50);
+				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+			}
+			else {
+				g.drawImage(bulletList.get(i).getBulletImg(),bulletList.get(i).getPosX(), bulletList.get(i).getPosY(), null);
+				//g.setColor(Color.WHITE);
+				//g.drawRect(bulletList.get(i).getPosX()+18 , bulletList.get(i).getPosY()+10, 21, 20);
+				bulletList.get(i).setRect(new Rectangle(bulletList.get(i).getPosX()+18,bulletList.get(i).getPosY()+10,21,20));
+			}
 		}
 
 
