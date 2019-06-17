@@ -80,6 +80,9 @@ public class Plane {
 	public int getActualVertex() {
 		return path[this.index];
 	}
+	public int getNext() {
+		return path[this.index+1];
+	}
 	public void setNextActualVertex() {
 		this.index += 1;
 	}
