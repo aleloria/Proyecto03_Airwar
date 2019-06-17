@@ -5,19 +5,48 @@ import data.structures.Graph;
 import data.structures.Node;
 import data.structures.VertexList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Dijkstra.
+ * Dijkstra algorithm implemented on a Class for easy management of data and access. The Dijkstra Class takes a given graph of N vertices and 2N edges
+ * and returns the shortest path between all vertices. This modified implementation also takes a source vertex and a destination vertex and returns the
+ * shortest path between them.
+ */
 public class Dijkstra {
 	
+	/** The vertex list. */
 	private VertexList[] vertexList = new VertexList[1];
+	
+	/** The unvisited. */
 	private Integer[] unvisited = new Integer[1];
+	
+	/** The vertex amount. */
 	private Integer vertexAmount = 0;
+	
+	/** The path. */
 	public Integer[] path = new Integer[1];
+	
+	/** The distances. */
 	private Integer[] distances = new Integer[1];
+	
+	/** The previous vertex. */
 	private Integer[] previousVertex = new Integer[1];
+	
+	/** The has elements. */
 	private boolean hasElements= true;
 	
 	
 	
 	
+	/**
+	 * Instantiates a new dijkstra.
+	 *
+	 *Starts the generation of the shortest path between two given vertices. uses the classic Dijkstra approach, then extrapolates the shortest path
+	 *information from an array that contains the shortest routes between the starting vertex and every existing vertex inside the graph.
+	 * @param graph the graph
+	 * @param start the start
+	 * @param finish the finish
+	 */
 	public Dijkstra(Graph graph, Integer start, Integer finish) {
 		
 		this.vertexAmount = graph.getVertexAmount();
@@ -34,6 +63,12 @@ public class Dijkstra {
 		begin(finish,start);
 	}
 
+	/**
+	 * Begin.
+	 *
+	 * @param finish the finish
+	 * @param start the start
+	 */
 	public void begin(Integer finish, Integer start) {
 		while(hasElements) {
 			Integer currentVertex= getVertex();
@@ -66,6 +101,11 @@ public class Dijkstra {
 			
 	}
 
+	/**
+	 * Gets the vertex.
+	 *
+	 * @return the vertex
+	 */
 	private Integer getVertex() {
 		checkForElements();
 		Integer vertex=-1;
@@ -89,6 +129,9 @@ public class Dijkstra {
 	
 	
 
+	/**
+	 * Check for elements.
+	 */
 	private void checkForElements() {
 		for(Integer index=0;index<this.unvisited.length;index++) {
 			if(this.unvisited[index]!=-1) {
@@ -97,13 +140,29 @@ public class Dijkstra {
 		}
 	}
 
+	/**
+	 * Gets the unvisited.
+	 *
+	 * @return the unvisited
+	 */
 	public Integer[] getUnvisited() {
 		return unvisited;
 	}
+	
+	/**
+	 * Gets the vertex amount.
+	 *
+	 * @return the vertex amount
+	 */
 	public Integer getVertexAmount() {
 		return vertexAmount;
 	}
 	
+	/**
+	 * Check validity.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean checkValidity() {
 		boolean valid = true;
 		for(int index=0;index<this.previousVertex.length;index++) {
@@ -115,6 +174,13 @@ public class Dijkstra {
 		return valid;
 	}
 	
+	/**
+	 * Gets the path.
+	 *
+	 * @param finish the finish
+	 * @param start the start
+	 * @return the path
+	 */
 	public Integer[] getPath(int finish, int start) {
 		Integer[] preliminaryPath = new Integer[this.vertexAmount];
 		Integer index=0;

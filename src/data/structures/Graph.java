@@ -3,6 +3,8 @@ package data.structures;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.logic.SpotPos;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Graph.
@@ -108,8 +110,9 @@ public class Graph {
  	 * This method uses Java.Util ThreadLocalRandom to generate a random index number that represents a vertex inside the adjacency list
  	 * it then creates an edge for each existing vertex, a connection, to the randomly generated index in the adjacency list.
  	 * It creates twice as many edges than there are vertices, ensuring that every node is connected.
+	 * @param Positions 
  	 */
- 	public void randomPathGenerator() {
+ 	public void randomPathGenerator(SpotPos[] Positions) {
 		 int swaps=0;
 		 for(int vertex = 0; vertex<this.vertexAmount;vertex++) {
 			 if(swaps==this.vertexAmount*2) {
@@ -122,7 +125,7 @@ public class Graph {
 						 break;
 					 }
 					 int randomIndex = ThreadLocalRandom.current().nextInt(0, this.vertexAmount);
-					 int randomWeigth = ThreadLocalRandom.current().nextInt(0, 21);
+					 Integer weight = getWeight(Positions, vertex, randomIndex);
 					 System.out.println("Trying to connect  " + randomIndex+ " to vertex number "+ vertex);
 					 if(randomIndex==vertex) {
 						 success=false;
@@ -136,7 +139,7 @@ public class Graph {
 						 }else{
 							 System.out.println("success");
 							 int destination=randomIndex;
-							 this.addEdge(randomWeigth, vertex, destination);
+							 this.addEdge(weight, vertex, destination);
 							 swaps++;
 							 success=true;
 						 }
@@ -145,6 +148,27 @@ public class Graph {
 				 }
 			 }
 		 }
+
+
+
+ 	private Integer getWeight(SpotPos[] positions, int source, int destination) {
+
+ 		int xCoordinateSource = positions[source].getposX();
+ 		int yCoordinateSource = positions[source].getposy();
+ 		int xCoordinateDestination = positions[destination].getposX();
+ 		int yCoordinateDestination = positions[destination].getposy();
+ 		Double xDifference = (double) Math.abs((xCoordinateSource-xCoordinateDestination));
+ 		Double yDifference = (double) Math.abs((yCoordinateSource-yCoordinateDestination));
+ 		Integer distanceBetweenVertices = (int) Math.sqrt(Math.pow(xDifference, 2)+Math.pow(yDifference, 2));
+ 		System.out.println("ORIGINAL DISTANCE: "+distanceBetweenVertices);
+ 		
+ 		if (positions[source].getspot()==1 || positions[destination].getspot()==1){
+ 			distanceBetweenVertices = distanceBetweenVertices*2;
+ 			System.out.println("WATER MODIFIER: "+distanceBetweenVertices);
+ 		}
+ 		Integer weight = distanceBetweenVertices;
+ 		return weight; 
+ 	}
 	 
 	 	 
 }
